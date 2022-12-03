@@ -1,0 +1,10 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Framework\:
+        resource: '../src/Module/Framework/**'
+        exclude: '../src/Module/Framework/Kernel.php'

@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  php:
+    build:
+      context: ./api
+      target: app_php
+      args:
+        SYMFONY_VERSION: ${SYMFONY_VERSION:-}
+        STABILITY: ${STABILITY:-stable}
+    restart: unless-stopped
+    volumes:
+      - php_socket:/var/run/php
+
+volumes:
+  php_socket:
