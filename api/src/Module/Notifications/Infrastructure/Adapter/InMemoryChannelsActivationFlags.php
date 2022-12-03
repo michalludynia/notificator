@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Infrastructure;
+namespace Notifications\Infrastructure\Adapter;
 
 use Notifications\Domain\NotificationChannels\ChannelsActivationFlags;
 use Notifications\Domain\ValueObject\ChannelId;

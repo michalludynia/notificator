@@ -25,10 +25,16 @@ services:
     tags:
       - { name: 'notification_channels.channel', priority: 10 }
 
-  #Notification channels transports
-  Notifications\Infrastructure\AwsSesEmailTransport:
+  #Notification transports
+  Notifications\Infrastructure\Adapter\AwsSesTransport:
     tags:
       - { name: 'notification_channels_providers.email_transport', priority: 10 }
+
+  Notifications\Infrastructure\Adapter\GaneshaAwsSesTransport:
+    decorates: Notifications\Infrastructure\Adapter\AwsSesTransport
+    arguments:
+      - '@.inner'
+      - '@Ackintosh\Ganesha'
 
   Notifications\Application\Port\MessagesPort:
     class: Notifications\Infrastructure\Adapter\MessagesAdapter
@@ -36,9 +42,27 @@ services:
       - '@Messages\Domain\Messages'
 
   Notifications\Domain\NotificationChannels\ChannelsActivationFlags:
-    class: Notifications\Infrastructure\InMemoryChannelsActivationFlags
+    class: Notifications\Infrastructure\Adapter\InMemoryChannelsActivationFlags
 
   Notifications\Domain\NotificationsLogs:
-    class: Notifications\Infrastructure\InFileNotificationsLogs
+    class: Notifications\Infrastructure\Adapter\MonologNotificationsLogs
     arguments:
       - '@monolog.logger.notifications_logs'
+
+  #Ganesha circuit breaker
+  Notifications\Infrastructure\Factory\GaneshaFactory:
+    arguments:
+      - '@notifications_ganesha_redis_client'
+      - '@monolog.logger.circuit_breaker_logs'
+
+  Ackintosh\Ganesha:
+    factory: [ '@Notifications\Infrastructure\Factory\GaneshaFactory', 'build' ]
+
+  #Redis
+  notifications_ganesha_redis_client:
+    class: Predis\Client
+    arguments:
+      $parameters: "%env(REDIS_URI)%"
+      $options:
+        prefix: 'notifications_ganesha:'
+        read_write_timeout: 0

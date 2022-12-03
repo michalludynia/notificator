@@ -1,12 +1,17 @@
 monolog:
     channels:
         - notifications_logs
+        - circuit_breaker_logs
 
     handlers:
-        main:
+        notifications:
             type: stream
             path: "%kernel.logs_dir%/notifications.log"
             channels: ['notifications_logs']
+        circuit_breaker_logs:
+            type: stream
+            path: "%kernel.logs_dir%/circuit_breaker.log"
+            channels: ['circuit_breaker_logs']
         console:
             type: console
             channels: ['notifications_logs']

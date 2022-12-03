@@ -6,10 +6,13 @@ namespace Domain\NotificationChannels\Transports;
 
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\TransportId;
 
-interface EmailTransport
+interface Transport
 {
     public function send(Receiver $to, Notification $notification): void;
 
     public function isAvailable(): bool;
+
+    public function getId(): TransportId;
 }

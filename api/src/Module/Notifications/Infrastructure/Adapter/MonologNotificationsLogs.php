@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Infrastructure;
+namespace Notifications\Infrastructure\Adapter;
 
 use Notifications\Domain\NotificationsLogs;
 use Notifications\Domain\ValueObject\Notification;
@@ -10,7 +10,7 @@ use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 use Psr\Log\LoggerInterface;
 
-class InFileNotificationsLogs implements NotificationsLogs
+class MonologNotificationsLogs implements NotificationsLogs
 {
     public function __construct(
         private readonly LoggerInterface $notificationsLogs

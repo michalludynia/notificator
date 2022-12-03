@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Infrastructure;
+namespace Notifications\Infrastructure\Adapter;
 
-use Domain\NotificationChannels\Transports\EmailTransport;
+use Domain\NotificationChannels\Transports\Transport;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\TransportId;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-class AwsSesEmailTransport implements EmailTransport
+class AwsSesTransport implements Transport
 {
+    private const TRANSPORT_ID = 'aws_ses_email_transport';
+
     public function __construct(
         private readonly MailerInterface $mailer
     ) {
@@ -22,7 +25,7 @@ class AwsSesEmailTransport implements EmailTransport
         $email = (new Email())
             ->to($to->email->getValue())
             ->subject('test')
-            ->text('Sending emails is fun again!');
+            ->text($notification->localisedContent);
 
         $this->mailer->send($email);
     }
@@ -30,5 +33,10 @@ class AwsSesEmailTransport implements EmailTransport
     public function isAvailable(): bool
     {
         return true;
+    }
+
+    public function getId(): TransportId
+    {
+        return TransportId::fromString(self::TRANSPORT_ID);
     }
 }

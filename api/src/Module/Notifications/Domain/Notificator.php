@@ -30,6 +30,6 @@ class Notificator implements NotificatorInterface
             return NotificationResult::success();
         }
 
-        return NotificationResult::failed(FailureReason::ALL_PROVIDERS_ARE_DOWN);
+        return NotificationResult::failed(FailureReason::NONE_OF_PROVIDERS_IS_AVAILABLE);
     }
 }

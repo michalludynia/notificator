@@ -6,5 +6,5 @@ namespace Notifications\Domain\ValueObject;
 
 enum FailureReason: string
 {
-    case ALL_PROVIDERS_ARE_DOWN = 'ALL_PROVIDERS_ARE_DOWN';
+    case NONE_OF_PROVIDERS_IS_AVAILABLE = 'NONE_OF_PROVIDERS_IS_AVAILABLE';
 }
