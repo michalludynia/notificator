@@ -21,10 +21,12 @@ class MonologNotificationsLogs implements NotificationsLogs
     {
         if (false === $notificationResult->hasSucceed) {
             $this->logger->notice(
-                sprintf('[NOTIFICATOR_FAILED] Receiver: %s MessageTitle: %s Reason: %s',
+                sprintf('[NOTIFICATOR_FAILED] Receiver: %s MessageTitle: "%s" Reason: "%s" Channel: "%s" Transport: "%s"',
                     $receiver->email->getValue(),
                     $notification->messageTitle,
-                    $notificationResult->failureReason->value ?? ''
+                    $notificationResult->failureReason->value ?? '',
+                    $notificationResult->usedChannel?->getValue(),
+                    $notificationResult->usedTransport?->getValue(),
                 )
             );
 
@@ -33,9 +35,11 @@ class MonologNotificationsLogs implements NotificationsLogs
 
         $this->logger->info(
             sprintf(
-                '[NOTIFICATOR_SUCCEEDED] Receiver: %s MessageTitle: %s',
+                '[NOTIFICATOR_SUCCEEDED] Receiver: "%s" MessageTitle: "%s" Channel: "%s" Transport: "%s"',
                 $receiver->email->getValue(),
                 $notification->messageTitle,
+                $notificationResult->usedChannel?->getValue(),
+                $notificationResult->usedTransport?->getValue(),
             )
         );
     }

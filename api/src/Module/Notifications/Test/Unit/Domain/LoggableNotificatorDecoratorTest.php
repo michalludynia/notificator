@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Test\Unit;
+namespace Notifications\Test\Unit\Domain;
 
-use Notifications\Domain\LoggableNotificatorDecorator;
+use Notifications\Domain\LoggableNotificator;
 use Notifications\Domain\NotificationsLogs;
 use Notifications\Domain\Notificator;
 use Notifications\Domain\ValueObject\ChannelId;
@@ -25,14 +25,14 @@ class LoggableNotificatorDecoratorTest extends TestCase
         $notificator->method('notify')
             ->willReturn(NotificationResult::success(
                 ChannelId::fromString('1'),
-                TransportId::EMAIL_TRANSPORT_AWS_SES
+                TransportId::fromString('2')
             )
             );
 
         $notificationLogs = $this->createMock(NotificationsLogs::class);
         $notificationLogs->expects($this->once())->method('log');
 
-        $loggableNotificator = new LoggableNotificatorDecorator(
+        $loggableNotificator = new LoggableNotificator(
             $notificator, $notificationLogs
         );
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Test\ValueObject;
+namespace Notifications\Test\Unit\Domain\ValueObject;
 
-use Notifications\Domain\ValueObject\Email;
 use Notifications\Domain\ValueObject\Phone;
 use PHPUnit\Framework\TestCase;
 

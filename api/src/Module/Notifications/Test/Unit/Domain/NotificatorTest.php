@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Test\Unit;
+namespace Notifications\Test\Unit\Domain;
 
-use Notifications\Domain\NotificationChannels\EmailChannel;
-use Notifications\Domain\NotificationChannels\NotificationChannel;
-use Notifications\Domain\NotificationChannels\PhoneChannel;
+use Notifications\Domain\Channels\Channel;
+use Notifications\Domain\Channels\ChannelsActivationFlags;
+use Notifications\Domain\Channels\EmailChannel;
+use Notifications\Domain\Channels\PhoneChannel;
+use Notifications\Domain\Channels\Transports\Transport;
+use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\Notificator;
 use Notifications\Domain\ValueObject\Email;
 use Notifications\Domain\ValueObject\FailureReason;
@@ -52,7 +55,7 @@ class NotificatorTest extends TestCase
     /**
      * @test
      */
-    public function notificatorReturnsFailureResultWhenNoneOfProvidersIsAvailable(): void
+    public function notificatorReturnsFailureResultWhenNoneOfProvidersIsActivated(): void
     {
         // given
         $activationFlags = new FakeChannelsActivationFlags([]);
@@ -73,11 +76,56 @@ class NotificatorTest extends TestCase
 
         // then
         $this->assertFalse($result->hasSucceed);
-        $this->assertEquals(FailureReason::NONE_OF_PROVIDERS_IS_AVAILABLE, $result->failureReason);
+        $this->assertEquals(FailureReason::ALL_AVAILABLE_PROVIDERS_FAILED, $result->failureReason);
     }
 
+    /**
+     * @test
+     */
+    public function notificatorProceedsToTheNextChannelWhenAllTransportsFromPreviousChannelFailed(): void
+    {
+        // given
+        $firstEmailTransport = $this->createMock(Transport::class);
+        $firstEmailTransport->method('isAvailable')->willReturn(true);
+        $firstEmailTransport->method('send')->willThrowException(new TransportFailedException());
 
-    /** @param NotificationChannel[] $notificationChannels*/
+        $secondEmailTransport = $this->createMock(Transport::class);
+        $secondEmailTransport->method('isAvailable')->willReturn(true);
+        $secondEmailTransport->method('send')->willThrowException(new TransportFailedException());
+
+        $firstPhoneTransport = $this->createMock(Transport::class);
+        $firstPhoneTransport->method('isAvailable')->willReturn(true);
+
+        $activationFlags = $this->createMock(ChannelsActivationFlags::class);
+        $activationFlags->method('isChannelActivated')->willReturn(true);
+
+        // then
+
+        $firstEmailTransport->expects($this->once())->method('send');
+        $secondEmailTransport->expects($this->once())->method('send');
+        $firstPhoneTransport->expects($this->once())->method('send');
+
+        $notificationChannels = [
+            new EmailChannel(
+                [
+                    $firstEmailTransport,
+                    $secondEmailTransport,
+                ],
+                $activationFlags,
+            ),
+            new PhoneChannel(
+                [
+                    $firstPhoneTransport,
+                ],
+                $activationFlags,
+            ),
+        ];
+
+        // when
+        $this->sendNotification($notificationChannels);
+    }
+
+    /** @param Channel[] $notificationChannels*/
     private function sendNotification(array $notificationChannels): NotificationResult
     {
         return (new Notificator($notificationChannels))->notify(

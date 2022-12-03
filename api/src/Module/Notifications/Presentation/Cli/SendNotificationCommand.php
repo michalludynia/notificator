@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Notifications\Presentation\Cli;
 
-use Application\Command\SendNotification;
+use Notifications\Application\Command\SendNotification;
 use Notifications\Application\DTO\ReceiverDTO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

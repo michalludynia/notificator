@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Domain\NotificationChannels;
+namespace Notifications\Domain\Channels;
 
 use Notifications\Domain\ValueObject\ChannelId;
 

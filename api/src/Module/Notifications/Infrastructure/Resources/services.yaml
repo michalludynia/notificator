@@ -2,6 +2,7 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    public: false
 
   Notifications\:
     resource: '../../**'
@@ -13,19 +14,19 @@ services:
     arguments:
       - !tagged_iterator notification_channels.channel
 
-  Notifications\Domain\LoggableNotificatorDecorator:
+  Notifications\Domain\LoggableNotificator:
     decorates: Notifications\Domain\NotificatorInterface
     arguments:
       - '@.inner'
 
   #Notification channels
-  Notifications\Domain\NotificationChannels\EmailChannel:
+  Notifications\Domain\Channels\EmailChannel:
     arguments:
       - !tagged_iterator notification_channels_providers.email_transport
     tags:
       - { name: 'notification_channels.channel', priority: 10 }
 
-  Notifications\Domain\NotificationChannels\PhoneChannel:
+  Notifications\Domain\Channels\PhoneChannel:
     arguments:
       - !tagged_iterator notification_channels_providers.phone_transport
     tags:
@@ -47,7 +48,7 @@ services:
     arguments:
       - '@Messages\Domain\Messages'
 
-  Notifications\Domain\NotificationChannels\ChannelsActivationFlags:
+  Notifications\Domain\Channels\ChannelsActivationFlags:
     class: Notifications\Infrastructure\Adapter\InMemoryChannelsActivationFlags
 
   Notifications\Domain\NotificationsLogs:

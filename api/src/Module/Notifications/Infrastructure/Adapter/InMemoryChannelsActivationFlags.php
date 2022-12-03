@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Notifications\Infrastructure\Adapter;
 
-use Notifications\Domain\NotificationChannels\ChannelsActivationFlags;
+use Notifications\Domain\Channels\ChannelsActivationFlags;
 use Notifications\Domain\ValueObject\ChannelId;
 
 class InMemoryChannelsActivationFlags implements ChannelsActivationFlags
 {
     private const FLAGS = [
         'email_channel' => true,
-        'phone_channel"' => false,
+        'phone_channel' => false,
     ];
 
     public function isChannelActivated(ChannelId $channelId): bool

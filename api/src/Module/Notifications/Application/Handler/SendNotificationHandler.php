@@ -6,9 +6,8 @@ namespace Notifications\Application\Handler;
 
 use Notifications\Application\Command\SendNotification;
 use Notifications\Application\Port\MessagesPort;
-use Notifications\Domain\NotificatorInterface;
+use Notifications\Domain\NotificationsService;
 use Notifications\Domain\ValueObject\Email;
-use Notifications\Domain\ValueObject\MessageId;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Phone;
 use Notifications\Domain\ValueObject\Receiver;
@@ -17,7 +16,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 class SendNotificationHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private readonly NotificatorInterface $notificator,
+        private readonly NotificationsService $notificationsService,
         private readonly MessagesPort $messagesPort
     ) {
     }
@@ -29,7 +28,7 @@ class SendNotificationHandler implements MessageHandlerInterface
             $command->preferredLanguage
         );
 
-        $this->notificator->notify(
+        $this->notificationsService->sendNotification(
             new Receiver(
                 Email::create($command->receiverDTO->email),
                 Phone::create($command->receiverDTO->phone),

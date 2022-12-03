@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Domain\NotificationChannels;
+namespace Notifications\Domain\Channels;
 
 use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
-interface NotificationChannel
+interface Channel
 {
     public function sendNotification(Receiver $to, Notification $notification): NotificationResult;
 

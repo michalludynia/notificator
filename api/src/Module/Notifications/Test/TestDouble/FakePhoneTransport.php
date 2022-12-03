@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Notifications\Test\TestDouble;
 
-use Notifications\Domain\NotificationChannels\Transports\Transport;
+use Notifications\Domain\Channels\Transports\Transport;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
 
 class FakePhoneTransport implements Transport
 {
+    private const TRANSPORT_ID = 'FAKE_PHONE_TRANSPORT_ID';
+
     public function __construct(
-        private readonly bool $isAvailable
+        private readonly bool $isAvailable,
     ) {
     }
 
@@ -29,6 +31,6 @@ class FakePhoneTransport implements Transport
 
     public function getId(): TransportId
     {
-        return TransportId::PHONE_TRANSPORT_TWILIO;
+        return TransportId::fromString(self::TRANSPORT_ID);
     }
 }

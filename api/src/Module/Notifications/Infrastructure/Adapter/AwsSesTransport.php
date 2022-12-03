@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Notifications\Infrastructure\Adapter;
 
-use Notifications\Domain\NotificationChannels\Transports\Transport;
+use Notifications\Domain\Channels\Transports\Transport;
+use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
 class AwsSesTransport implements Transport
 {
+    private const TRANSPORT_ID = 'email_transport_aws_ses';
+
     public function __construct(
         private readonly MailerInterface $mailer
     ) {
@@ -20,12 +24,16 @@ class AwsSesTransport implements Transport
 
     public function send(Receiver $to, Notification $notification): void
     {
-        $email = (new Email())
-            ->to($to->email->getValue())
-            ->subject($notification->messageTitle)
-            ->text($notification->messageContent);
+        try {
+            $email = (new Email())
+                ->to($to->email->getValue())
+                ->subject($notification->messageTitle)
+                ->text($notification->messageContent);
 
-        $this->mailer->send($email);
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            throw new TransportFailedException($exception->getMessage(), $exception->getCode(), $exception);
+        }
     }
 
     public function isAvailable(): bool
@@ -35,6 +43,6 @@ class AwsSesTransport implements Transport
 
     public function getId(): TransportId
     {
-        return TransportId::EMAIL_TRANSPORT_AWS_SES;
+        return TransportId::fromString(self::TRANSPORT_ID);
     }
 }

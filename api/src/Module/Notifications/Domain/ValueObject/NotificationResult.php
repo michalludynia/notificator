@@ -24,8 +24,8 @@ class NotificationResult
         return new self(false, $channelId, $transportId, $reason);
     }
 
-    public static function notPerformed(): self
+    public static function failedAllAvailableProvidersFailed(): self
     {
-        return new self(false, null, null, FailureReason::NONE_OF_PROVIDERS_IS_AVAILABLE);
+        return new self(false, null, null, FailureReason::ALL_AVAILABLE_PROVIDERS_FAILED);
     }
 }

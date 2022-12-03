@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Test\Unit;
+namespace Notifications\Test\Unit\Domain\Channels;
 
-use Notifications\Domain\NotificationChannels\EmailChannel;
-use Notifications\Domain\NotificationChannels\Transports\Transport;
+use Notifications\Domain\Channels\PhoneChannel;
+use Notifications\Domain\Channels\Transports\Transport;
 use Notifications\Domain\ValueObject\Email;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Phone;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
 use Notifications\Test\TestDouble\FakeChannelsActivationFlags;
 use PHPUnit\Framework\TestCase;
 
-class EmailChannelTest extends TestCase
+class PhoneChannelTest extends TestCase
 {
     /** @test */
     public function channelSendNotificationWithFirstAvailableTransportOnly(): void
@@ -23,7 +22,7 @@ class EmailChannelTest extends TestCase
         // given
         $firstEmailTransport = $this->createMock(Transport::class);
         $firstEmailTransport->method('isAvailable')->willReturn(true);
-        $firstEmailTransport->method('getId')->willReturn(TransportId::EMAIL_TRANSPORT_AWS_SES);
+        $firstEmailTransport->method('getId')->willReturn(TransportId::fromString('1'));
         $secondEmailTransport = $this->createMock(Transport::class);
         $secondEmailTransport->method('isAvailable')->willReturn(true);
 
@@ -43,7 +42,7 @@ class EmailChannelTest extends TestCase
         $firstEmailTransport->method('isAvailable')->willReturn(false);
         $secondEmailTransport = $this->createMock(Transport::class);
         $secondEmailTransport->method('isAvailable')->willReturn(true);
-        $secondEmailTransport->method('getId')->willReturn(TransportId::EMAIL_TRANSPORT_AWS_SES);
+        $secondEmailTransport->method('getId')->willReturn(TransportId::fromString('1'));
 
         // then
         $firstEmailTransport->expects($this->never())->method('send');
@@ -54,14 +53,14 @@ class EmailChannelTest extends TestCase
     }
 
     /** @param Transport[] $emailTransports*/
-    private function sendNotification(array $emailTransports): NotificationResult
+    private function sendNotification(array $emailTransports): void
     {
-        $channel = new EmailChannel(
+        $channel = new PhoneChannel(
             $emailTransports,
             new FakeChannelsActivationFlags(),
         );
 
-        return $channel->sendNotification(
+        $channel->sendNotification(
             new Receiver(
                 Email::create('email@email.com'),
                 Phone::create('phone')

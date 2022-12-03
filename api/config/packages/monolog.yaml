@@ -15,3 +15,5 @@ monolog:
         console:
             type: console
             channels: ['notifications_logs']
+            verbosity_levels:
+                 VERBOSITY_NORMAL: DEBUG

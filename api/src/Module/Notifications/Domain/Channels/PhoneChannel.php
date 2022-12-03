@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Domain\NotificationChannels;
+namespace Notifications\Domain\Channels;
 
-use Notifications\Domain\NotificationChannels\Transports\Transport;
+use Notifications\Domain\Channels\Transports\Transport;
+use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
-class PhoneChannel implements NotificationChannel
+class PhoneChannel implements Channel
 {
     private const CHANNEL_ID = 'phone_channel';
 
@@ -28,15 +29,19 @@ class PhoneChannel implements NotificationChannel
                 continue;
             }
 
-            $phoneTransport->send($to, $notification);
+            try {
+                $phoneTransport->send($to, $notification);
 
-            return NotificationResult::success(
-                self::getId(),
-                $phoneTransport->getId(),
-            );
+                return NotificationResult::success(
+                    self::getId(),
+                    $phoneTransport->getId(),
+                );
+            } catch (TransportFailedException) {
+                continue;
+            }
         }
 
-        return NotificationResult::notPerformed();
+        return NotificationResult::failedAllAvailableProvidersFailed();
     }
 
     public function isActivated(): bool
