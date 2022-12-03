@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Application\Command;
+namespace Notifications\Application\Command;
 
 use Notifications\Application\DTO\ReceiverDTO;
 

@@ -25,6 +25,12 @@ services:
     tags:
       - { name: 'notification_channels.channel', priority: 10 }
 
+  Notifications\Domain\NotificationChannels\PhoneChannel:
+    arguments:
+      - !tagged_iterator notification_channels_providers.phone_transport
+    tags:
+      - { name: 'notification_channels.channel', priority: 10 }
+
   #Notification transports
   Notifications\Infrastructure\Adapter\AwsSesTransport:
     tags:

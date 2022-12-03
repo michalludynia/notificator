@@ -13,17 +13,17 @@ use Psr\Log\LoggerInterface;
 class MonologNotificationsLogs implements NotificationsLogs
 {
     public function __construct(
-        private readonly LoggerInterface $notificationsLogs
+        private readonly LoggerInterface $logger
     ) {
     }
 
     public function log(Receiver $receiver, Notification $notification, NotificationResult $notificationResult): void
     {
         if (false === $notificationResult->hasSucceed) {
-            $this->notificationsLogs->notice(
-                sprintf('[NOTIFICATOR_FAILED] Receiver: %s MessageId: %s Reason: %s',
+            $this->logger->notice(
+                sprintf('[NOTIFICATOR_FAILED] Receiver: %s MessageTitle: %s Reason: %s',
                     $receiver->email->getValue(),
-                    $notification->messageId->getValue(),
+                    $notification->messageTitle,
                     $notificationResult->failureReason->value ?? ''
                 )
             );
@@ -31,11 +31,11 @@ class MonologNotificationsLogs implements NotificationsLogs
             return;
         }
 
-        $this->notificationsLogs->info(
+        $this->logger->info(
             sprintf(
-                '[NOTIFICATOR_SUCCEEDED] Receiver: %s MessageId: %s',
+                '[NOTIFICATOR_SUCCEEDED] Receiver: %s MessageTitle: %s',
                 $receiver->email->getValue(),
-                $notification->messageId->getValue(),
+                $notification->messageTitle,
             )
         );
     }

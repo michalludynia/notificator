@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\NotificationChannels\Transports;
+namespace Notifications\Domain\NotificationChannels\Transports;
 
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;

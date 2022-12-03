@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Notifications\Application\Handler;
 
-use Application\Command\SendNotification;
+use Notifications\Application\Command\SendNotification;
 use Notifications\Application\Port\MessagesPort;
 use Notifications\Domain\NotificatorInterface;
 use Notifications\Domain\ValueObject\Email;
@@ -35,7 +35,6 @@ class SendNotificationHandler implements MessageHandlerInterface
                 Phone::create($command->receiverDTO->phone),
             ),
             new Notification(
-                MessageId::fromString($command->messageId),
                 $localisedMessageContent->title,
                 $localisedMessageContent->content
             ),

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Notifications\Infrastructure\Adapter;
 
 use Ackintosh\Ganesha;
-use Domain\NotificationChannels\Transports\Transport;
+use Notifications\Domain\NotificationChannels\Transports\Transport;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;

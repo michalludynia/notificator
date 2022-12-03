@@ -20,16 +20,15 @@ class Notificator implements NotificatorInterface
 
     public function notify(Receiver $receiver, Notification $notification): NotificationResult
     {
+
         foreach ($this->channels as $channel) {
             if (false === $channel->isActivated()) {
                 continue;
             }
 
-            $channel->sendNotification($receiver, $notification);
-
-            return NotificationResult::success();
+            return $channel->sendNotification($receiver, $notification);
         }
 
-        return NotificationResult::failed(FailureReason::NONE_OF_PROVIDERS_IS_AVAILABLE);
+        return NotificationResult::notPerformed();
     }
 }

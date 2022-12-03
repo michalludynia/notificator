@@ -10,29 +10,29 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
-class EmailChannel implements NotificationChannel
+class PhoneChannel implements NotificationChannel
 {
-    private const CHANNEL_ID = 'email_channel';
+    private const CHANNEL_ID = 'phone_channel';
 
-    /** @param Transport[] $emailTransports */
+    /** @param Transport[] $phoneTransports */
     public function __construct(
-        private readonly iterable $emailTransports,
+        private readonly iterable $phoneTransports,
         private readonly ChannelsActivationFlags $activationFlags
     ) {
     }
 
     public function sendNotification(Receiver $to, Notification $notification): NotificationResult
     {
-        foreach ($this->emailTransports as $emailTransport) {
-            if (false === $emailTransport->isAvailable()) {
+        foreach ($this->phoneTransports as $phoneTransport) {
+            if (false === $phoneTransport->isAvailable()) {
                 continue;
             }
 
-            $emailTransport->send($to, $notification);
+            $phoneTransport->send($to, $notification);
 
             return NotificationResult::success(
                 self::getId(),
-                $emailTransport->getId(),
+                $phoneTransport->getId(),
             );
         }
 

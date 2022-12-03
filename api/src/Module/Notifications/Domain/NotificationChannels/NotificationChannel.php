@@ -6,13 +6,14 @@ namespace Notifications\Domain\NotificationChannels;
 
 use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
+use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
 interface NotificationChannel
 {
-    public function sendNotification(Receiver $to, Notification $notification): void;
+    public function sendNotification(Receiver $to, Notification $notification): NotificationResult;
 
     public function isActivated(): bool;
 
-    public function getId(): ChannelId;
+    public static function getId(): ChannelId;
 }

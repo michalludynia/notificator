@@ -2,35 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Infrastructure\Adapter;
+namespace Notifications\Test\TestDouble;
 
 use Notifications\Domain\NotificationChannels\Transports\Transport;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
-class AwsSesTransport implements Transport
+class FakeEmailTransport implements Transport
 {
     public function __construct(
-        private readonly MailerInterface $mailer
+        private readonly bool $isAvailable
     ) {
     }
 
     public function send(Receiver $to, Notification $notification): void
     {
-        $email = (new Email())
-            ->to($to->email->getValue())
-            ->subject($notification->messageTitle)
-            ->text($notification->messageContent);
-
-        $this->mailer->send($email);
     }
 
     public function isAvailable(): bool
     {
-        return true;
+        return $this->isAvailable;
     }
 
     public function getId(): TransportId
