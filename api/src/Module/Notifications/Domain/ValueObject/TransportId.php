@@ -4,20 +4,7 @@ declare(strict_types=1);
 
 namespace Notifications\Domain\ValueObject;
 
-class TransportId
+enum TransportId: string
 {
-    private function __construct(
-        private readonly string $value
-    ) {
-    }
-
-    public static function fromString(string $value): self
-    {
-        return new self($value);
-    }
-
-    public function getValue(): string
-    {
-        return $this->value;
-    }
+    case EMAIL_TRANSPORT_AWS_SES = 'email_transport_aws_ses';
 }

@@ -13,8 +13,6 @@ use Symfony\Component\Mime\Email;
 
 class AwsSesTransport implements Transport
 {
-    private const TRANSPORT_ID = 'aws_ses_email_transport';
-
     public function __construct(
         private readonly MailerInterface $mailer
     ) {
@@ -24,8 +22,8 @@ class AwsSesTransport implements Transport
     {
         $email = (new Email())
             ->to($to->email->getValue())
-            ->subject('test')
-            ->text($notification->localisedContent);
+            ->subject($notification->messageTitle)
+            ->text($notification->messageContent);
 
         $this->mailer->send($email);
     }
@@ -37,6 +35,6 @@ class AwsSesTransport implements Transport
 
     public function getId(): TransportId
     {
-        return TransportId::fromString(self::TRANSPORT_ID);
+        return TransportId::EMAIL_TRANSPORT_AWS_SES;
     }
 }

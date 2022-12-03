@@ -8,6 +8,7 @@ class LocalisedContent
 {
     public function __construct(
         public readonly LanguageCode $language,
+        public readonly string $title,
         public readonly string $content,
     ) {
     }

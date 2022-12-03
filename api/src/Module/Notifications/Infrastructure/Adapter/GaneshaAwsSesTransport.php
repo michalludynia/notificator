@@ -22,16 +22,16 @@ class GaneshaAwsSesTransport implements Transport
     {
         try {
             $this->decorated->send($to, $notification);
-            $this->ganesha->success($this->getId()->getValue());
+            $this->ganesha->success($this->getId()->value);
         } catch (\Throwable $e) {
-            $this->ganesha->failure($this->getId()->getValue());
+            $this->ganesha->failure($this->getId()->value);
             throw $e;
         }
     }
 
     public function isAvailable(): bool
     {
-        return $this->ganesha->isAvailable($this->getId()->getValue());
+        return $this->ganesha->isAvailable($this->getId()->value);
     }
 
     public function getId(): TransportId

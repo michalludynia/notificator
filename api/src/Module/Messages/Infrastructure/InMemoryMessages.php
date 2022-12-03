@@ -37,10 +37,12 @@ class InMemoryMessages implements Messages
                 [
                     new LocalisedContent(
                         LanguageCode::En,
+                        'Greeting 1',
                         'Hello, how are you?'
                     ),
                     new LocalisedContent(
                         LanguageCode::Pl,
+                        'Przywitanie 1',
                         'Cześć, jak się masz?'
                     ),
                 ]
@@ -50,10 +52,12 @@ class InMemoryMessages implements Messages
                 [
                     new LocalisedContent(
                         LanguageCode::En,
+                        'Greeting 2',
                         'Hello, have a nice day!'
                     ),
                     new LocalisedContent(
                         LanguageCode::Pl,
+                        'Przywitanie 2',
                         'Cześć, miłego dnia!'
                     ),
                 ]

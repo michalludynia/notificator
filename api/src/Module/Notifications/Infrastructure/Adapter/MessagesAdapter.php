@@ -7,7 +7,7 @@ namespace Notifications\Infrastructure\Adapter;
 use Messages\Domain\Messages;
 use Messages\Domain\ValueObject\LanguageCode;
 use Messages\Domain\ValueObject\MessageId;
-use Notifications\Application\DTO\MessageContentDTO;
+use Notifications\Application\DTO\MessageDTO;
 use Notifications\Application\Port\MessagesPort;
 
 class MessagesAdapter implements MessagesPort
@@ -17,14 +17,16 @@ class MessagesAdapter implements MessagesPort
     ) {
     }
 
-    public function getContentForLanguage(string $messageId, string $languageCode): MessageContentDTO
+    public function getContentForLanguage(string $messageId, string $languageCode): MessageDTO
     {
-        $localisedMessageContent = $this->messages
-            ->find(MessageId::fromString($messageId))
-            ->getLocalisedContent(LanguageCode::from($languageCode));
+        $message = $this->messages->find(MessageId::fromString($messageId));
 
-        return new MessageContentDTO(
-            $localisedMessageContent->content
+        $content = $message->getLocalisedContent(LanguageCode::from($languageCode));
+
+        return new MessageDTO(
+            $message->id->value,
+            $content->title,
+            $content->content
         );
     }
 }

@@ -8,7 +8,8 @@ class Notification
 {
     public function __construct(
         public readonly MessageId $messageId,
-        public readonly string $localisedContent
+        public readonly string $messageTitle,
+        public readonly string $messageContent
     ) {
     }
 }

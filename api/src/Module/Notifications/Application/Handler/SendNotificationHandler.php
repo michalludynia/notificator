@@ -36,6 +36,7 @@ class SendNotificationHandler implements MessageHandlerInterface
             ),
             new Notification(
                 MessageId::fromString($command->messageId),
+                $localisedMessageContent->title,
                 $localisedMessageContent->content
             ),
         );
