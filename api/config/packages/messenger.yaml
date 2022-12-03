@@ -1,0 +1,7 @@
+framework:
+    messenger:
+        # reset services after consuming messages
+        reset_on_message: true
+
+        transports:
+             sync: 'sync://'

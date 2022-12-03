@@ -1,0 +1,30 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Notifications\:
+    resource: '../../**'
+    exclude: '../../{Tests,Infrastructure}'
+
+  #Notificator
+  Notifications\Domain\Notificator:
+    arguments:
+      - !tagged_iterator notification_channels.channel
+
+  #Notification channels
+  Notifications\Domain\NotificationChannels\EmailChannel:
+    arguments:
+      - !tagged_iterator notification_channels_providers.email_transport
+    tags:
+      - { name: 'notification_channels.channel', priority: 10 }
+
+  #Notification channels transports
+  Notifications\Infrastructure\AwsSesEmailTransport:
+    tags:
+      - { name: 'notification_channels_providers.email_transport', priority: 10 }
+
+  Notifications\Application\Port\MessagesPort:
+    class: Notifications\Infrastructure\Adapter\MessagesAdapter
+    arguments:
+      - '@Messages\Domain\Messages'

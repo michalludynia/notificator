@@ -12,7 +12,7 @@ class EmailChannel implements NotificationChannel
 {
     /** @param EmailProvider[] $emailProviders */
     public function __construct(
-        private array $emailProviders
+        private readonly iterable $emailProviders
     ) {
     }
 
@@ -24,6 +24,7 @@ class EmailChannel implements NotificationChannel
             }
 
             $emailProvider->send($to, $notification);
+
             return;
         }
 

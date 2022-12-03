@@ -1,0 +1,7 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        envelope:
+            sender: 'ludynia.michal@gmail.com'
+        headers:
+            From: 'Notificator <ludynia.michal@gmail.com>'

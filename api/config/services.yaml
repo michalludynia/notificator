@@ -1,5 +1,9 @@
 parameters:
 
+imports:
+    - { resource: '../src/Module/Notifications/Infrastructure/Resources/services.yaml'}
+    - { resource: '../src/Module/Messages/Infrastructure/Resources/services.yaml'}
+
 services:
     _defaults:
         autowire: true

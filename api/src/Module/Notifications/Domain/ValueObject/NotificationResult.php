@@ -12,11 +12,13 @@ class NotificationResult
     ) {
     }
 
-    public static function success(): self {
+    public static function success(): self
+    {
         return new self(true, null);
     }
 
-    public static function failed(FailureReason $reason): self {
+    public static function failed(FailureReason $reason): self
+    {
         return new self(false, $reason);
     }
 }

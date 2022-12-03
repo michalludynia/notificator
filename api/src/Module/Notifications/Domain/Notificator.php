@@ -14,7 +14,7 @@ class Notificator
 {
     /** @param NotificationChannel[] $channels */
     public function __construct(
-        private readonly array $channels
+        private readonly iterable $channels
     ) {
     }
 

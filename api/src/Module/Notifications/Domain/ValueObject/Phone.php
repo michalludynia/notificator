@@ -20,5 +20,4 @@ class Phone
     {
         return $this->value;
     }
-
 }

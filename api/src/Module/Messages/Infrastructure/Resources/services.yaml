@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Messages\:
+    resource: '../../**'
+    exclude: '../../{Tests,Infrastructure}'
+
+  Messages\Domain\Messages:
+    class: Messages\Infrastructure\InMemoryMessages

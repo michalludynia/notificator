@@ -11,6 +11,10 @@ services:
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - '8081:8025'
 
 volumes:
   php_socket:

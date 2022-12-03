@@ -20,5 +20,4 @@ class Email
     {
         return $this->value;
     }
-
 }
