@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace Notifications\Domain\NotificationChannels;
 
-use Domain\NotificationChannels\Providers\EmailProvider;
+use Domain\NotificationChannels\Transports\EmailTransport;
+use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 
 class EmailChannel implements NotificationChannel
 {
-    /** @param EmailProvider[] $emailProviders */
+    private const CHANNEL_ID = 'email_channel';
+
+    /** @param EmailTransport[] $emailTransports */
     public function __construct(
-        private readonly iterable $emailProviders
+        private readonly iterable $emailTransports,
+        private readonly ChannelsActivationFlags $activationFlags
     ) {
     }
 
     public function sendNotification(Receiver $to, Notification $notification): void
     {
-        foreach ($this->emailProviders as $emailProvider) {
-            if (false === $emailProvider->isAvailable()) {
+        foreach ($this->emailTransports as $emailTransport) {
+            if (false === $emailTransport->isAvailable()) {
                 continue;
             }
 
-            $emailProvider->send($to, $notification);
+            $emailTransport->send($to, $notification);
 
             return;
         }
@@ -31,8 +35,13 @@ class EmailChannel implements NotificationChannel
         throw new \RuntimeException('All email providers are down');
     }
 
-    public function isTurnedOn(): bool
+    public function isActivated(): bool
     {
-        return true;
+        return $this->activationFlags->isChannelActivated($this->getId());
+    }
+
+    public function getId(): ChannelId
+    {
+        return ChannelId::fromString(self::CHANNEL_ID);
     }
 }

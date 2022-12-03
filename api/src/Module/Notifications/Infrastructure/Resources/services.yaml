@@ -8,9 +8,15 @@ services:
     exclude: '../../{Tests,Infrastructure}'
 
   #Notificator
-  Notifications\Domain\Notificator:
+  Notifications\Domain\NotificatorInterface:
+    class: Notifications\Domain\Notificator
     arguments:
       - !tagged_iterator notification_channels.channel
+
+  Notifications\Domain\LoggableNotificatorDecorator:
+    decorates: Notifications\Domain\NotificatorInterface
+    arguments:
+      - '@.inner'
 
   #Notification channels
   Notifications\Domain\NotificationChannels\EmailChannel:
@@ -28,3 +34,11 @@ services:
     class: Notifications\Infrastructure\Adapter\MessagesAdapter
     arguments:
       - '@Messages\Domain\Messages'
+
+  Notifications\Domain\NotificationChannels\ChannelsActivationFlags:
+    class: Notifications\Infrastructure\InMemoryChannelsActivationFlags
+
+  Notifications\Domain\NotificationsLogs:
+    class: Notifications\Infrastructure\InFileNotificationsLogs
+    arguments:
+      - '@monolog.logger.notifications_logs'

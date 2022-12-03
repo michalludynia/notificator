@@ -18,3 +18,4 @@ services:
 
 volumes:
   php_socket:
+  db_data:

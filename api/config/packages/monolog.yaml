@@ -1,0 +1,12 @@
+monolog:
+    channels:
+        - notifications_logs
+
+    handlers:
+        main:
+            type: stream
+            path: "%kernel.logs_dir%/notifications.log"
+            channels: ['notifications_logs']
+        console:
+            type: console
+            channels: ['notifications_logs']

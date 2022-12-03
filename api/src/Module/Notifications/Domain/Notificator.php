@@ -10,7 +10,7 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
-class Notificator
+class Notificator implements NotificatorInterface
 {
     /** @param NotificationChannel[] $channels */
     public function __construct(
@@ -21,7 +21,7 @@ class Notificator
     public function notify(Receiver $receiver, Notification $notification): NotificationResult
     {
         foreach ($this->channels as $channel) {
-            if (false === $channel->isTurnedOn()) {
+            if (false === $channel->isActivated()) {
                 continue;
             }
 
