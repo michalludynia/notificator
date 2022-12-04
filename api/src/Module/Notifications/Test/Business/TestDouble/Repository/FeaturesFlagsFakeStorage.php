@@ -13,20 +13,20 @@ class FeaturesFlagsFakeStorage
 
     public function markAsActive(ChannelId $channelId): void
     {
-        $this->storage[$channelId->getValue()] = true;
+        $this->storage[$channelId->value] = true;
     }
 
     public function markAsInActive(ChannelId $channelId): void
     {
-        $this->storage[$channelId->getValue()] = false;
+        $this->storage[$channelId->value] = false;
     }
 
     public function isActive(ChannelId $channelId): bool
     {
-        if (!isset($this->storage[$channelId->getValue()])) {
+        if (!isset($this->storage[$channelId->value])) {
             throw new \RuntimeException('Requested channel not supported by feature flags');
         }
 
-        return $this->storage[$channelId->getValue()];
+        return $this->storage[$channelId->value];
     }
 }

@@ -13,8 +13,6 @@ use Notifications\Domain\ValueObject\Recipient;
 
 class EmailChannel implements Channel
 {
-    private const CHANNEL_ID = 'email_channel';
-
     /** @param Transport[] $emailTransports */
     public function __construct(
         private readonly iterable $emailTransports,
@@ -48,6 +46,6 @@ class EmailChannel implements Channel
 
     public static function getId(): ChannelId
     {
-        return ChannelId::fromString(self::CHANNEL_ID);
+        return ChannelId::EmailChannel;
     }
 }

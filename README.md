@@ -69,18 +69,13 @@ Receiver: "email@email.com/123123123" MessageTitle: "Greeting message" Transport
 The log visible in the console, will be also available through container, located in the file */var/log/notification.log*
 
 #### 2. Enable/disable specific notifications channels
-You can choose which notification channels should be enabled at the moment. To do so, you have to edit the file *InMemoryChannelsFeatureFlags.php* and the method *flags()*.
+You can choose which notification channels should be enabled at the moment. To do so, you have to edit the environment variables.
 
-Below you can see all that channels are enabled. If you would like to turn off the specific one just change the boolean value from true to false.
+Below you can see all that channels are enabled. If you would like to turn off the specific one, just change the boolean value from true to false.
 ```
-    /** @return array<string,bool> */
-    private static function flags(): array
-    {
-        return [
-            EmailChannel::getId()->getValue() => true,
-            SmsChannel::getId()->getValue() => true,
-        ];
-    }
+#Channels feature flags
+USE_EMAIL_CHANNEL=true
+USE_SMS_CHANNEL=true
 ```
 
 ## Running Tests
@@ -113,7 +108,6 @@ To get deeper view into used architecture:
 https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/#application-core-organisation
 
 #### Circuit breaker
-
 The solution of notificator component is enriched with circuit breaker pattern implementation.
 https://martinfowler.com/bliki/CircuitBreaker.html
 
@@ -128,12 +122,12 @@ Each of notification channels can have multiple transports to deliver the notifi
 Transport interface and configuring it in the services of notification module.
 
 #### Feature flags (trade off - time limit)
-Due to time limitations the app uses in memory channels feature flags implementation. \
-This limits configuration possibility of feature flags and force the user to change  one of the classes to toggle activation of specific notification channels. You can find it in file: *InMemoryChannelsFeatureFlags.php*.
+Due to time limitations the app uses environment feature flags implementation. \
+This limits configuration possibility of feature flags and reduce flexibility.
 
 In serious project, some feature flags engine should be used instead.
 
-#### Messages storage (trade off - time limit, assumptions)
+#### MessagesContent storage (trade off - time limit, assumptions)
 Due to time limitations the app uses in memory message storage, so there are only two ready to use messages you can send.\
 This is the assumption made by me that in serious project messages will come from some external sources (microservice, database etc).
 To not complicate implementation and be able to spent more time on notificator component, I've introduced the easiest form of messages storage - in memory.
@@ -150,7 +144,7 @@ Normally some log tool should be used to handle them and provide reliable observ
 
 ## Future plans
 Those are the things that I would do, if I would have more time and less assumptions to make:
-* Use https://getunleash.io for handling feature flags instead of in memory implementation.
+* Use https://getunleash.io for handling feature flags instead of environmental implementation.
 * Use asynchronous  message queue like RabbitMQ, Amazon SQS to introduce concurrency into sending and make app more failure resistant.
 * Use Kibana, Grafana or some similar tool to handle logs and prepare availability dashboards.
 * Use database, external service to fetch messages or accept content directly from outside contexts without fetching them from notificator app itself.

@@ -13,8 +13,6 @@ use Notifications\Domain\ValueObject\Recipient;
 
 class SmsChannel implements Channel
 {
-    private const CHANNEL_ID = 'sms_channel';
-
     /** @param Transport[] $smsTransports */
     public function __construct(
         private readonly iterable $smsTransports,
@@ -48,6 +46,6 @@ class SmsChannel implements Channel
 
     public static function getId(): ChannelId
     {
-        return ChannelId::fromString(self::CHANNEL_ID);
+        return ChannelId::SmsChannel;
     }
 }

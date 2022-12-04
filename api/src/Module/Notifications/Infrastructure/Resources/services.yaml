@@ -1,3 +1,7 @@
+parameters:
+  use_email_channel: '%env(bool:USE_EMAIL_CHANNEL)%'
+  use_sms_channel: '%env(bool:USE_SMS_CHANNEL)%'
+
 services:
   _defaults:
     autowire: true
@@ -74,7 +78,10 @@ services:
       - '@Messages\Domain\Messages'
 
   Notifications\Domain\Channels\ChannelsFeatureFlags:
-    class: Notifications\Infrastructure\Adapter\InMemoryChannelsFeatureFlags
+    class: Notifications\Infrastructure\Adapter\EnvChannelsFeatureFlags
+    arguments:
+      - '%use_email_channel%'
+      - '%use_sms_channel%'
 
   #Ganesha circuit breaker
   Notifications\Infrastructure\Factory\GaneshaFactory:

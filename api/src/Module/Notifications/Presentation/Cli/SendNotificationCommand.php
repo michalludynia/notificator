@@ -41,7 +41,7 @@ class SendNotificationCommand extends Command
         $helper = $this->getHelper('question');
 
         $messageIdQuestion = new ChoiceQuestion(
-            'Provide message id (1 or 2): ',
+            'Choose one available messages: ',
             $this->messagesPort->allMessagesIds()
         );
 
@@ -66,7 +66,7 @@ class SendNotificationCommand extends Command
         });
 
         $customerLanguageQuestion = new ChoiceQuestion(
-            'Provide customer preferred language (en or pl): ',
+            'Choose customer preferred language: ',
             array_map(static fn (LanguageCode $languageCode) => $languageCode->value, LanguageCode::cases())
         );
 
