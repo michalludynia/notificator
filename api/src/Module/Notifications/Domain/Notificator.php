@@ -6,9 +6,11 @@ namespace Notifications\Domain;
 
 use Notifications\Domain\Channels\Channel;
 use Notifications\Domain\Channels\EmailChannel;
+use Notifications\Domain\Exception\ChannelAllTransportsFailedException;
+use Notifications\Domain\Exception\SendingNotificationFailedException;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 
 class Notificator implements NotificatorInterface
 {
@@ -18,23 +20,22 @@ class Notificator implements NotificatorInterface
     ) {
     }
 
-    public function notify(Receiver $receiver, Notification $notification): NotificationResult
+    public function notify(Recipient $recipient, Notification $notification): void
     {
         foreach ($this->channels as $channel) {
-
             if (false === $channel->isActivated()) {
                 continue;
             }
 
-            $result = $channel->sendNotification($receiver, $notification);
-
-            if (false === $result->hasSucceed) {
+            try {
+                $channel->sendNotification($recipient, $notification);
+            } catch (ChannelAllTransportsFailedException) {
                 continue;
             }
 
-            return $result;
+            return;
         }
 
-        return NotificationResult::failedAllAvailableProvidersFailed();
+        throw new SendingNotificationFailedException('All transports from available channels failed');
     }
 }

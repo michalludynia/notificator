@@ -6,9 +6,9 @@ namespace Notifications\Domain;
 
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 
 interface NotificatorInterface
 {
-    public function notify(Receiver $receiver, Notification $notification): NotificationResult;
+    public function notify(Recipient $recipient, Notification $notification): void;
 }

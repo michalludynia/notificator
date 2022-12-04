@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Notifications\Domain\Channels;
 
 use Notifications\Domain\Channels\Transports\Transport;
+use Notifications\Domain\Exception\ChannelAllTransportsFailedException;
 use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\NotificationResult;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 
 class SmsChannel implements Channel
 {
@@ -22,7 +22,7 @@ class SmsChannel implements Channel
     ) {
     }
 
-    public function sendNotification(Receiver $to, Notification $notification): NotificationResult
+    public function sendNotification(Recipient $recipient, Notification $notification): void
     {
         foreach ($this->smsTransports as $smsTransport) {
             if (false === $smsTransport->isAvailable()) {
@@ -30,19 +30,15 @@ class SmsChannel implements Channel
             }
 
             try {
-                $smsTransport->send($to, $notification);
+                $smsTransport->send($recipient, $notification);
 
-                return NotificationResult::success(
-                    self::getId(),
-                    $smsTransport->getId(),
-                    $to->phone->getValue()
-                );
+                return;
             } catch (TransportFailedException) {
                 continue;
             }
         }
 
-        return NotificationResult::failedAllAvailableProvidersFailed();
+        throw new ChannelAllTransportsFailedException();
     }
 
     public function isActivated(): bool

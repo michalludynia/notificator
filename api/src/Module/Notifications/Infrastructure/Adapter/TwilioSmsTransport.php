@@ -7,13 +7,11 @@ namespace Notifications\Infrastructure\Adapter;
 use Notifications\Domain\Channels\Transports\Transport;
 use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 use Notifications\Domain\ValueObject\TransportId;
-use Symfony\Component\Notifier\Exception\ExceptionInterface;
-use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\Notification\Notification as NotificationSymfony;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\Recipient\Recipient as RecipientSymfony;
 
 class TwilioSmsTransport implements Transport
 {
@@ -24,7 +22,7 @@ class TwilioSmsTransport implements Transport
     ) {
     }
 
-    public function send(Receiver $to, Notification $notification): void
+    public function send(Recipient $recipient, Notification $notification): void
     {
         $symfonyNotification = (new NotificationSymfony(
             $notification->messageTitle, ['sms']
@@ -33,9 +31,9 @@ class TwilioSmsTransport implements Transport
         try {
             $this->notifier->send(
                 $symfonyNotification,
-                new Recipient(
-                    $to->email->getValue(),
-                    $to->phone->getValue()
+                new RecipientSymfony(
+                    $recipient->email->getValue(),
+                    $recipient->phone->getValue()
                 )
             );
         } catch (\Exception $e) {

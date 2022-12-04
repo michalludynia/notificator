@@ -9,74 +9,52 @@ use Notifications\Domain\Channels\ChannelsFeatureFlags;
 use Notifications\Domain\Channels\EmailChannel;
 use Notifications\Domain\Channels\SmsChannel;
 use Notifications\Domain\Channels\Transports\Transport;
+use Notifications\Domain\Exception\SendingNotificationFailedException;
 use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\Notificator;
 use Notifications\Domain\ValueObject\Email;
-use Notifications\Domain\ValueObject\FailureReason;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Phone;
-use Notifications\Domain\ValueObject\Receiver;
-use Notifications\Test\TestDouble\FakeChannelsFeatureFlags;
-use Notifications\Test\TestDouble\FakeEmailTransport;
-use Notifications\Test\TestDouble\FakeSmsTransport;
+use Notifications\Domain\ValueObject\Recipient;
 use PHPUnit\Framework\TestCase;
 
 class NotificatorTest extends TestCase
 {
     /** @test */
-    public function notificatorUseOnlyActivatedServices(): void
+    public function notificatorUseOnlyActivatedChannels(): void
     {
         // given
-        $activationFlags = new FakeChannelsFeatureFlags([
-                SmsChannel::getId(),
-            ]
-        );
+        $emailChannel = $this->createMock(EmailChannel::class);
+        $emailChannel->method('isActivated')->willReturn(false);
 
-        $notificationChannels = [
-            new EmailChannel(
-                [new FakeEmailTransport(true)],
-                $activationFlags,
-            ),
-            new SmsChannel(
-                [new FakeSmsTransport(true)],
-                $activationFlags,
-            ),
-        ];
-
-        // when
-        $result = $this->sendNotification($notificationChannels);
+        $smsChannel = $this->createMock(SmsChannel::class);
+        $smsChannel->method('isActivated')->willReturn(true);
 
         // then
-        $this->assertEquals(SmsChannel::getId(), $result->usedChannel);
-        $this->assertTrue($result->hasSucceed);
+        $emailChannel->expects($this->never())->method('sendNotification');
+        $smsChannel->expects($this->once())->method('sendNotification');
+
+        // when
+        $this->sendNotification([$emailChannel, $smsChannel]);
     }
 
     /**
      * @test
      */
-    public function notificatorReturnsFailureResultWhenNoneOfProvidersIsActivated(): void
+    public function notificatorReturnsFailureResultWhenAllChannelsAreDeActivated(): void
     {
         // given
-        $activationFlags = new FakeChannelsFeatureFlags([]);
+        $emailChannel = $this->createMock(EmailChannel::class);
+        $emailChannel->method('isActivated')->willReturn(false);
 
-        $notificationChannels = [
-            new EmailChannel(
-                [new FakeEmailTransport(true)],
-                $activationFlags,
-            ),
-            new SmsChannel(
-                [new FakeSmsTransport(true)],
-                $activationFlags,
-            ),
-        ];
-
-        // when
-        $result = $this->sendNotification($notificationChannels);
+        $smsChannel = $this->createMock(SmsChannel::class);
+        $smsChannel->method('isActivated')->willReturn(false);
 
         // then
-        $this->assertFalse($result->hasSucceed);
-        $this->assertEquals(FailureReason::ALL_AVAILABLE_PROVIDERS_FAILED, $result->failureReason);
+        $this->expectException(SendingNotificationFailedException::class);
+
+        // when
+        $this->sendNotification([$emailChannel, $smsChannel]);
     }
 
     /**
@@ -126,10 +104,10 @@ class NotificatorTest extends TestCase
     }
 
     /** @param Channel[] $notificationChannels*/
-    private function sendNotification(array $notificationChannels): NotificationResult
+    private function sendNotification(array $notificationChannels): void
     {
-        return (new Notificator($notificationChannels))->notify(
-            new Receiver(
+        (new Notificator($notificationChannels))->notify(
+            new Recipient(
                 Email::create('email@email.com'),
                 Phone::create('phone')
             ),

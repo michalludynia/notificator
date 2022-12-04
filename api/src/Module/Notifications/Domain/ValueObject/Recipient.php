@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Notifications\Domain\ValueObject;
 
-class Receiver
+class Recipient
 {
     public function __construct(
         public readonly Email $email,

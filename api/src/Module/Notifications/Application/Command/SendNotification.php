@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Notifications\Application\Command;
 
-use Notifications\Application\DTO\ReceiverDTO;
+use Notifications\Application\DTO\NotificationDTO;
+use Notifications\Application\DTO\RecipientDTO;
 
 class SendNotification
 {
     public function __construct(
-        public readonly string $messageId,
-        public readonly ReceiverDTO $receiverDTO,
-        public readonly string $preferredLanguage
+        public readonly RecipientDTO $recipient,
+        public readonly NotificationDTO $notification,
     ) {
     }
 }

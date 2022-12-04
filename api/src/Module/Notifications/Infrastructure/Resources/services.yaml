@@ -14,11 +14,6 @@ services:
     arguments:
       - !tagged_iterator notification_channels.channel
 
-  Notifications\Domain\LoggableNotificator:
-    decorates: Notifications\Domain\NotificatorInterface
-    arguments:
-      - '@.inner'
-
   #Notification channels (from first injected to last)
   Notifications\Domain\Channels\EmailChannel:
     arguments:
@@ -55,6 +50,20 @@ services:
       - '@.inner'
       - '@Ackintosh\Ganesha'
 
+  aws_ses_email_transport_loggable_decorator:
+    class: Notifications\Infrastructure\Adapter\LoggableTransportDecorator
+    decorates: Notifications\Infrastructure\Adapter\AwsSesTransport
+    arguments:
+      - '@.inner'
+      - '@monolog.logger.notifications_logs'
+
+  twilio_sms_transport_loggable_decorator:
+    class: Notifications\Infrastructure\Adapter\LoggableTransportDecorator
+    decorates: Notifications\Infrastructure\Adapter\TwilioSmsTransport
+    arguments:
+      - '@.inner'
+      - '@monolog.logger.notifications_logs'
+
   Notifications\Application\Port\MessagesPort:
     class: Notifications\Infrastructure\Adapter\MessagesAdapter
     arguments:
@@ -62,11 +71,6 @@ services:
 
   Notifications\Domain\Channels\ChannelsFeatureFlags:
     class: Notifications\Infrastructure\Adapter\InMemoryChannelsFeatureFlags
-
-  Notifications\Domain\NotificationsLogs:
-    class: Notifications\Infrastructure\Adapter\MonologNotificationsLogs
-    arguments:
-      - '@monolog.logger.notifications_logs'
 
   #Ganesha circuit breaker
   Notifications\Infrastructure\Factory\GaneshaFactory:

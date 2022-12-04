@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Notifications\Domain\Channels;
 
+use Notifications\Domain\Exception\ChannelAllTransportsFailedException;
 use Notifications\Domain\ValueObject\ChannelId;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\NotificationResult;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 
 interface Channel
 {
-    public function sendNotification(Receiver $to, Notification $notification): NotificationResult;
+    /** @throws ChannelAllTransportsFailedException */
+    public function sendNotification(Recipient $recipient, Notification $notification): void;
 
     public function isActivated(): bool;
 

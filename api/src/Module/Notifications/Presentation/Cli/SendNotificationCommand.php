@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Notifications\Presentation\Cli;
 
-use Notifications\Application\Command\SendNotification;
-use Notifications\Application\DTO\ReceiverDTO;
+use Notifications\Application\Command\NotifyCustomers;
+use Notifications\Application\DTO\CustomerDTO;
+use Notifications\Application\DTO\RecipientDTO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,13 +30,20 @@ class SendNotificationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->commandBus->dispatch(
-            new SendNotification(
+            new NotifyCustomers(
                 '1',
-                new ReceiverDTO(
-                    'ludynia.michal@gmail.com',
-                    '0048516471016',
-                ),
-                'pl'
+                [
+                    new CustomerDTO(
+                        'ludynia.michal@gmail.com',
+                        '0048516471016',
+                        'pl'
+                    ),
+                    new CustomerDTO(
+                        'dummy.fau@gmail.com',
+                        '0048516471015',
+                        'en'
+                    ),
+                ],
             )
         );
 

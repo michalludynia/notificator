@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Notifications\Test\Unit\Domain\Channels;
 
+use Notifications\Domain\Channels\ChannelsFeatureFlags;
 use Notifications\Domain\Channels\SmsChannel;
 use Notifications\Domain\Channels\Transports\Transport;
 use Notifications\Domain\ValueObject\Email;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Phone;
-use Notifications\Domain\ValueObject\Receiver;
+use Notifications\Domain\ValueObject\Recipient;
 use Notifications\Domain\ValueObject\TransportId;
-use Notifications\Test\TestDouble\FakeChannelsFeatureFlags;
 use PHPUnit\Framework\TestCase;
 
 class SmsChannelTest extends TestCase
@@ -57,11 +57,11 @@ class SmsChannelTest extends TestCase
     {
         $channel = new SmsChannel(
             $emailTransports,
-            new FakeChannelsFeatureFlags(),
+            $this->createMock(ChannelsFeatureFlags::class),
         );
 
         $channel->sendNotification(
-            new Receiver(
+            new Recipient(
                 Email::create('email@email.com'),
                 Phone::create('phone')
             ),
