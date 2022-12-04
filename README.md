@@ -22,7 +22,7 @@ docker-compose version 2.13.0
 
 #### 1. Clone API repository
 ```bash
-youruser@machine:$ git clone --branch main git@github.com:michalludynia/transfergo-notificator.git notificator
+youruser@machine:$ git clone --branch main git@github.com:michalludynia/notificator.git notificator
 ```
 
 #### 2. Change current directory
