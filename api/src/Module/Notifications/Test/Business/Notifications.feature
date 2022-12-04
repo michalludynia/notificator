@@ -3,13 +3,13 @@ Feature: Behaviour of notifications
   Scenario: In order to notify the customers at least one channel have to be active.
     Given EmailChannel is inactive
     And SmsChannel is active
-    When Message with id 1 is being send to 2 customers
+    When Message with id GreetingMessage is being send to 2 customers
     Then Notification has been sent successfully
 
   Scenario: Notification sending fails when all channels has been deactivated.
     Given EmailChannel is inactive
     And SmsChannel is inactive
-    When Message with id 1 is being send to 2 customers
+    When Message with id GreetingMessage is being send to 2 customers
     Then Notification sending has failed
 
   Scenario: Notifications are send with backup channels when primary channel fails

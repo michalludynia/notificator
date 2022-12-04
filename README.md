@@ -67,6 +67,22 @@ After executing the command you should see some similar message to the one below
 Receiver: "email@email.com/123123123" MessageTitle: "Greeting message" Transport: "email_transport_aws_ses"
 ```
 The log visible in the console, will be also available through container, located in the file */var/log/notification.log*
+
+#### 2. Enable/disable specific notifications channels
+You can choose which notification channels should be enabled at the moment. To do so, you have to edit the file *InMemoryChannelsFeatureFlags.php* and the method *flags()*.
+
+Below you can see all that channels are enabled. If you would like to turn off the specific one just change the boolean value from true to false.
+```
+    /** @return array<string,bool> */
+    private static function flags(): array
+    {
+        return [
+            EmailChannel::getId()->getValue() => true,
+            SmsChannel::getId()->getValue() => true,
+        ];
+    }
+```
+
 ## Running Tests
 
 To run tests, run the following command:
@@ -101,12 +117,19 @@ https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onio
 The solution of notificator component is enriched with circuit breaker pattern implementation.
 https://martinfowler.com/bliki/CircuitBreaker.html
 
-It let the notifier component to fail fast and use fallback strategies in case of any failures. The pattern was implemented with use of php package called Ganesha (https://github.com/ackintosh/ganesha).
-You can find more context about that decision in the one of ADR's located in in */docs* catalog.
+It let the notifier component to fail fast and use fallback strategies in case of any failures. 
+The circuit breaker tracks availability of each transport and opens or closes the circuit depending of it's availability.
+The pattern was implemented with use of php package called Ganesha (https://github.com/ackintosh/ganesha).
+You can find more context about that decision in the one of ADR's located in */docs* catalog.
+
+#### Multiple transports per channel
+Each of notification channels can have multiple transports to deliver the notification. For example the email channel can use 
+*Amazon SES* and as backup a *Sendgrid* service or even more. New transports can easily be added by implementing
+Transport interface and configuring it in the services of notification module.
 
 #### Feature flags (trade off - time limit)
 Due to time limitations the app uses in memory channels feature flags implementation. \
-This limits configuration possiblilites of feature flags and force the user to change  one of the classes to toogle activation of specific notification channels. You can find it in file: *InMemoryChannelsFeatureFlags.php*.
+This limits configuration possibility of feature flags and force the user to change  one of the classes to toggle activation of specific notification channels. You can find it in file: *InMemoryChannelsFeatureFlags.php*.
 
 In serious project, some feature flags engine should be used instead.
 
@@ -115,13 +138,13 @@ Due to time limitations the app uses in memory message storage, so there are onl
 This is the assumption made by me that in serious project messages will come from some external sources (microservice, database etc).
 To not complicate implementation and be able to spent more time on notificator component, I've introduced the easiest form of messages storage - in memory.
 
-#### Synchrounus queue (trade-off - time limit)
+#### Synchronous queue (trade-off - time limit)
 Due to time limitations the synchronous symfony messenger transport is being used for handling commands and events.
-Normally, the asynchrounus transport should be used with some background workers or external message queue like RabbitMQ or Amazon SQS to gain better resistance and improve performance.
+Normally, the asynchronous transport should be used with some background workers or external message queue like RabbitMQ or Amazon SQS to gain better resistance and improve performance.
 Currently, if sending the message to one of recipient will fail, the others also fails.
 
 #### In-file logs (trade-off - time limit)
-Currently all the application logs are stored in var/log directory and are not forwared anywhere.
+Currently all the application logs are stored in var/log directory and are not forward anywhere.
 Normally some log tool should be used to handle them and provide reliable observability of the service.
 
 
@@ -131,7 +154,7 @@ Those are the things that I would do, if I would have more time and less assumpt
 * Use asynchronous  message queue like RabbitMQ, Amazon SQS to introduce concurrency into sending and make app more failure resistant.
 * Use Kibana, Grafana or some similar tool to handle logs and prepare availability dashboards.
 * Use database, external service to fetch messages or accept content directly from outside contexts without fetching them from notificator app itself.
-* Increase test covereage
+* Increase test coverage
 
 ## Authors
 

@@ -39,6 +39,7 @@ services:
   aws_ses_email_transport_ganesha_decorator:
     class: Notifications\Infrastructure\Adapter\GaneshaTransportDecorator
     decorates: Notifications\Infrastructure\Adapter\AwsSesTransport
+    decoration_priority: 10
     arguments:
       - '@.inner'
       - '@Ackintosh\Ganesha'
@@ -46,6 +47,7 @@ services:
   twilio_sms_transport_ganesha_decorator:
     class: Notifications\Infrastructure\Adapter\GaneshaTransportDecorator
     decorates: Notifications\Infrastructure\Adapter\TwilioSmsTransport
+    decoration_priority: 10
     arguments:
       - '@.inner'
       - '@Ackintosh\Ganesha'
@@ -53,6 +55,7 @@ services:
   aws_ses_email_transport_loggable_decorator:
     class: Notifications\Infrastructure\Adapter\LoggableTransportDecorator
     decorates: Notifications\Infrastructure\Adapter\AwsSesTransport
+    decoration_priority: 5
     arguments:
       - '@.inner'
       - '@monolog.logger.notifications_logs'
@@ -60,6 +63,7 @@ services:
   twilio_sms_transport_loggable_decorator:
     class: Notifications\Infrastructure\Adapter\LoggableTransportDecorator
     decorates: Notifications\Infrastructure\Adapter\TwilioSmsTransport
+    decoration_priority: 5
     arguments:
       - '@.inner'
       - '@monolog.logger.notifications_logs'
