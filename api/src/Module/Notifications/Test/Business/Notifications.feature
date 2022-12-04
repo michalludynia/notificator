@@ -15,10 +15,10 @@ Feature: Behaviour of notifications
   Scenario: Notifications are send with backup channels when primary channel fails
     Given EmailChannel is active
     And SmsChannel is active
-    When Message with id 1 is being send to 2 customers
+    When Message with id GreetingMessage is being send to 2 customers
     And EmailChannel is inactive
-    And Message with id 2 is being send to 3 customers
+    And Message with id GoodbyeMessage is being send to 3 customers
     And EmailChannel is active
-    And Message with id 1 is being send to 3 customers
+    And Message with id GreetingMessage is being send to 3 customers
     Then EmailChannel should be used 5 times
     And SmsChannel should be used 3 times

@@ -7,7 +7,7 @@ down:
 logs:
 	@docker-compose logs -f php
 
-bash:
+sh:
 	@docker-compose exec php sh
 
 cs-fix:
@@ -21,3 +21,5 @@ test-unit:
 
 test-business:
 	@docker-compose ${API_COMPOSE} exec php ./vendor/bin/behat
+
+test-all: test-unit test-business

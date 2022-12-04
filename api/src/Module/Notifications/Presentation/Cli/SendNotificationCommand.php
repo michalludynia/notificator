@@ -32,7 +32,7 @@ class SendNotificationCommand extends Command
     {
         $this
             ->setDescription('Send notification')
-            ->setName('notifications:send');
+            ->setName('notifications:send-to-customer');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

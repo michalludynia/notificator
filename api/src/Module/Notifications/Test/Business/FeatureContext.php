@@ -66,9 +66,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When /^Message with id (\d+) is being send to (\d+) customers$/
+     * @When /^Message with id (.*) is being send to (\d+) customers$/
      */
-    public function messageWithIdShouldBeSendToCustomers(int $messageId, int $customersNumber): void
+    public function messageWithIdShouldBeSendToCustomers(string $messageId, int $customersNumber): void
     {
         $customers = [];
 
@@ -83,7 +83,7 @@ class FeatureContext implements Context
         try {
             $this->commandBus->dispatch(
                 new NotifyCustomers(
-                    (string) $messageId,
+                    $messageId,
                     $customers
                 )
             );
