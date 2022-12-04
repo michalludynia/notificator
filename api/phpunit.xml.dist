@@ -24,15 +24,16 @@
     </testsuites>
 
     <coverage processUncoveredFiles="true">
-        <report>
-            <html outputDirectory="coverage" highLowerBound="80" />
-            <clover outputFile="clover.cov" />
-        </report>
+<!--        <report>-->
+<!--            <html outputDirectory="coverage" highLowerBound="80" />-->
+<!--            <clover outputFile="coverage/clover.cov" />-->
+<!--        </report>-->
         <include>
             <directory suffix=".php">src/Module</directory>
         </include>
         <exclude>
             <directory>src/Module/**/Test</directory>
+            <directory>src/Module/**/Infrastructure</directory>
         </exclude>
     </coverage>
 
