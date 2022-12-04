@@ -1,0 +1,13 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Notifications\Test\Business\FeatureContext
+            paths:
+                - './src/Module/Notifications/Test/Business'
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            kernel:
+                class: Framework\Kernel
+                environment: test
+                debug: true

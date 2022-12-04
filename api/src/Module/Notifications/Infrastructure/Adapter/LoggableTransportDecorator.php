@@ -33,7 +33,6 @@ class LoggableTransportDecorator implements Transport
                     $this->decorated->getId()->getValue(),
                 )
             );
-
         } catch (TransportFailedException $e) {
             $this->logger->notice(
                 sprintf('[NOTIFICATOR_FAILED] Receiver: "%s/%s" MessageTitle: "%s" Error: "%s" Transport: "%s"',

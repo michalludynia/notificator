@@ -6,7 +6,6 @@ namespace Notifications\Presentation\Cli;
 
 use Notifications\Application\Command\NotifyCustomers;
 use Notifications\Application\DTO\CustomerDTO;
-use Notifications\Application\DTO\RecipientDTO;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

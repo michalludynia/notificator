@@ -39,7 +39,6 @@ class TwilioSmsTransport implements Transport
         } catch (\Exception $e) {
             throw new TransportFailedException($e->getMessage(), $e->getCode(), $e);
         }
-
     }
 
     public function isAvailable(): bool

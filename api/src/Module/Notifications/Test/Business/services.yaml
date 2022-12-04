@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Notifications\Test\Business\TestDouble\Repository\FeaturesFlagsFakeStorage: ~
+
+  Notifications\Test\Business\TestDouble\Spy\ChannelUsageSpy: ~
+
+  Notifications\Domain\Channels\ChannelsFeatureFlags:
+    class: Notifications\Test\Business\TestDouble\FakeChannelsFeaturesFlags
+    arguments:
+      - '@Notifications\Test\Business\TestDouble\Repository\FeaturesFlagsFakeStorage'
+
+  Notifications\Test\Business\FeatureContext:
+    arguments:
+      - '@Notifications\Test\Business\TestDouble\Repository\FeaturesFlagsFakeStorage'
+      - '@command.bus'
+
+  #Remove normal notification transports and replace them with fake's instead
+  Notifications\Infrastructure\Adapter\AwsSesTransport:
+    tags: []
+
+  Notifications\Infrastructure\Adapter\TwilioSmsTransport:
+    tags: []
+
+  Notifications\Test\Business\TestDouble\FakeEmailTransport:
+    arguments:
+      - '@Notifications\Test\Business\TestDouble\Spy\ChannelUsageSpy'
+    tags:
+      - { name: 'notification_channels_providers.email_transport', priority: 10 }
+
+  Notifications\Test\Business\TestDouble\FakeSmsTransport:
+    arguments:
+      - '@Notifications\Test\Business\TestDouble\Spy\ChannelUsageSpy'
+    tags:
+      - { name: 'notification_channels_providers.sms_transport', priority: 10 }

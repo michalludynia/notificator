@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Notifications\Domain;
 
 use Notifications\Domain\Channels\Channel;
-use Notifications\Domain\Channels\EmailChannel;
 use Notifications\Domain\Exception\ChannelAllTransportsFailedException;
 use Notifications\Domain\Exception\SendingNotificationFailedException;
 use Notifications\Domain\ValueObject\Notification;
-use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Recipient;
 
 class Notificator implements NotificatorInterface

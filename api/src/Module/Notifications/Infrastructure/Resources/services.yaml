@@ -6,7 +6,7 @@ services:
 
   Notifications\:
     resource: '../../**'
-    exclude: '../../{Tests,Infrastructure}'
+    exclude: '../../{Test,Infrastructure}'
 
   #Notificator
   Notifications\Domain\NotificatorInterface:

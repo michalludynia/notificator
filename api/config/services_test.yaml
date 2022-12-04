@@ -1,0 +1,2 @@
+imports:
+  - { resource: '../src/Module/Notifications/Test/Business/services.yaml'}

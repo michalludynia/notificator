@@ -25,7 +25,6 @@ class NotifyCustomersHandler implements MessageHandlerInterface
     {
         /** @var CustomerDTO $customer */
         foreach ($command->customers as $customer) {
-
             $localisedMessageContent = $this->messagesPort->getLocalised(
                 $command->messageId,
                 $customer->preferredLanguage

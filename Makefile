@@ -18,3 +18,6 @@ phpstan:
 
 test-unit:
 	@docker-compose ${API_COMPOSE} exec php ./vendor/bin/phpunit --testsuite unit
+
+test-business:
+	@docker-compose ${API_COMPOSE} exec php ./vendor/bin/behat

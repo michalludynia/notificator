@@ -1,7 +1,9 @@
 framework:
     messenger:
-        # reset services after consuming messages
-        reset_on_message: true
+      default_bus: command.bus
+      buses:
+        command.bus: ~
+      reset_on_message: true
 
-        transports:
-             sync: 'sync://'
+      transports:
+           sync: 'sync://'
