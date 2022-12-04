@@ -7,7 +7,7 @@ namespace Notifications\Test\Unit\Domain;
 use Notifications\Domain\Channels\Channel;
 use Notifications\Domain\Channels\ChannelsFeatureFlags;
 use Notifications\Domain\Channels\EmailChannel;
-use Notifications\Domain\Channels\PhoneChannel;
+use Notifications\Domain\Channels\SmsChannel;
 use Notifications\Domain\Channels\Transports\Transport;
 use Notifications\Domain\Exception\TransportFailedException;
 use Notifications\Domain\Notificator;
@@ -19,7 +19,7 @@ use Notifications\Domain\ValueObject\Phone;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Test\TestDouble\FakeChannelsFeatureFlags;
 use Notifications\Test\TestDouble\FakeEmailTransport;
-use Notifications\Test\TestDouble\FakePhoneTransport;
+use Notifications\Test\TestDouble\FakeSmsTransport;
 use PHPUnit\Framework\TestCase;
 
 class NotificatorTest extends TestCase
@@ -29,7 +29,7 @@ class NotificatorTest extends TestCase
     {
         // given
         $activationFlags = new FakeChannelsFeatureFlags([
-                PhoneChannel::getId(),
+                SmsChannel::getId(),
             ]
         );
 
@@ -38,8 +38,8 @@ class NotificatorTest extends TestCase
                 [new FakeEmailTransport(true)],
                 $activationFlags,
             ),
-            new PhoneChannel(
-                [new FakePhoneTransport(true)],
+            new SmsChannel(
+                [new FakeSmsTransport(true)],
                 $activationFlags,
             ),
         ];
@@ -48,7 +48,7 @@ class NotificatorTest extends TestCase
         $result = $this->sendNotification($notificationChannels);
 
         // then
-        $this->assertEquals(PhoneChannel::getId(), $result->usedChannel);
+        $this->assertEquals(SmsChannel::getId(), $result->usedChannel);
         $this->assertTrue($result->hasSucceed);
     }
 
@@ -65,8 +65,8 @@ class NotificatorTest extends TestCase
                 [new FakeEmailTransport(true)],
                 $activationFlags,
             ),
-            new PhoneChannel(
-                [new FakePhoneTransport(true)],
+            new SmsChannel(
+                [new FakeSmsTransport(true)],
                 $activationFlags,
             ),
         ];
@@ -93,8 +93,8 @@ class NotificatorTest extends TestCase
         $secondEmailTransport->method('isAvailable')->willReturn(true);
         $secondEmailTransport->method('send')->willThrowException(new TransportFailedException());
 
-        $firstPhoneTransport = $this->createMock(Transport::class);
-        $firstPhoneTransport->method('isAvailable')->willReturn(true);
+        $firstSmsTransport = $this->createMock(Transport::class);
+        $firstSmsTransport->method('isAvailable')->willReturn(true);
 
         $activationFlags = $this->createMock(ChannelsFeatureFlags::class);
         $activationFlags->method('isChannelActivated')->willReturn(true);
@@ -103,7 +103,7 @@ class NotificatorTest extends TestCase
 
         $firstEmailTransport->expects($this->once())->method('send');
         $secondEmailTransport->expects($this->once())->method('send');
-        $firstPhoneTransport->expects($this->once())->method('send');
+        $firstSmsTransport->expects($this->once())->method('send');
 
         $notificationChannels = [
             new EmailChannel(
@@ -113,9 +113,9 @@ class NotificatorTest extends TestCase
                 ],
                 $activationFlags,
             ),
-            new PhoneChannel(
+            new SmsChannel(
                 [
-                    $firstPhoneTransport,
+                    $firstSmsTransport,
                 ],
                 $activationFlags,
             ),

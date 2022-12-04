@@ -5,21 +5,29 @@ declare(strict_types=1);
 namespace Notifications\Infrastructure\Adapter;
 
 use Notifications\Domain\Channels\ChannelsFeatureFlags;
+use Notifications\Domain\Channels\EmailChannel;
+use Notifications\Domain\Channels\SmsChannel;
 use Notifications\Domain\ValueObject\ChannelId;
 
 class InMemoryChannelsFeatureFlags implements ChannelsFeatureFlags
 {
-    private const FLAGS = [
-        'email_channel' => true,
-        'phone_channel' => true,
-    ];
-
     public function isChannelActivated(ChannelId $channelId): bool
     {
-        if (!isset(self::FLAGS[$channelId->getValue()])) {
+        $storage = self::flags();
+
+        if (!isset($storage[$channelId->getValue()])) {
             throw new \RuntimeException('Channel with requested id not exists');
         }
 
-        return self::FLAGS[$channelId->getValue()];
+        return self::flags()[$channelId->getValue()];
+    }
+
+    /** @return array<string,bool> */
+    private static function flags(): array
+    {
+        return [
+            EmailChannel::getId()->getValue() => true,
+            SmsChannel::getId()->getValue() => true,
+        ];
     }
 }

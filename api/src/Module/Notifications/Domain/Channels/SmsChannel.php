@@ -11,30 +11,30 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Receiver;
 
-class PhoneChannel implements Channel
+class SmsChannel implements Channel
 {
-    private const CHANNEL_ID = 'phone_channel';
+    private const CHANNEL_ID = 'sms_channel';
 
-    /** @param Transport[] $phoneTransports */
+    /** @param Transport[] $smsTransports */
     public function __construct(
-        private readonly iterable $phoneTransports,
+        private readonly iterable $smsTransports,
         private readonly ChannelsFeatureFlags $activationFlags
     ) {
     }
 
     public function sendNotification(Receiver $to, Notification $notification): NotificationResult
     {
-        foreach ($this->phoneTransports as $phoneTransport) {
-            if (false === $phoneTransport->isAvailable()) {
+        foreach ($this->smsTransports as $smsTransport) {
+            if (false === $smsTransport->isAvailable()) {
                 continue;
             }
 
             try {
-                $phoneTransport->send($to, $notification);
+                $smsTransport->send($to, $notification);
 
                 return NotificationResult::success(
                     self::getId(),
-                    $phoneTransport->getId(),
+                    $smsTransport->getId(),
                     $to->phone->getValue()
                 );
             } catch (TransportFailedException) {

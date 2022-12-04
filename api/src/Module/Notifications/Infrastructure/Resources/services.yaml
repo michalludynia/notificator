@@ -26,7 +26,7 @@ services:
     tags:
       - { name: 'notification_channels.channel', priority: 10 }
 
-  Notifications\Domain\Channels\PhoneChannel:
+  Notifications\Domain\Channels\SmsChannel:
     arguments:
       - !tagged_iterator notification_channels_providers.sms_transport
     tags:
