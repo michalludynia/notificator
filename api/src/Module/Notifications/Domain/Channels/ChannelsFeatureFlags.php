@@ -6,7 +6,7 @@ namespace Notifications\Domain\Channels;
 
 use Notifications\Domain\ValueObject\ChannelId;
 
-interface ChannelsActivationFlags
+interface ChannelsFeatureFlags
 {
     public function isChannelActivated(ChannelId $channelId): bool;
 }

@@ -11,7 +11,7 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Phone;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
-use Notifications\Test\TestDouble\FakeChannelsActivationFlags;
+use Notifications\Test\TestDouble\FakeChannelsFeatureFlags;
 use PHPUnit\Framework\TestCase;
 
 class PhoneChannelTest extends TestCase
@@ -57,7 +57,7 @@ class PhoneChannelTest extends TestCase
     {
         $channel = new PhoneChannel(
             $emailTransports,
-            new FakeChannelsActivationFlags(),
+            new FakeChannelsFeatureFlags(),
         );
 
         $channel->sendNotification(

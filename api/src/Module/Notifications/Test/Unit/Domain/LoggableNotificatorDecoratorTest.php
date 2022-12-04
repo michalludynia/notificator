@@ -19,13 +19,14 @@ use PHPUnit\Framework\TestCase;
 class LoggableNotificatorDecoratorTest extends TestCase
 {
     /** @test */
-    public function operationIsLoggedAfterNotifing(): void
+    public function operationIsLoggedAfterNotifying(): void
     {
         $notificator = $this->createMock(Notificator::class);
         $notificator->method('notify')
             ->willReturn(NotificationResult::success(
                 ChannelId::fromString('1'),
-                TransportId::fromString('2')
+                TransportId::fromString('2'),
+                '111111111'
             )
             );
 

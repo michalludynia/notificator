@@ -32,7 +32,7 @@ class SendNotificationCommand extends Command
             new SendNotification(
                 '1',
                 new ReceiverDTO(
-                    'email@email.com',
+                    'ludynia.michal@gmail.com',
                     '0048516471016',
                 ),
                 'pl'

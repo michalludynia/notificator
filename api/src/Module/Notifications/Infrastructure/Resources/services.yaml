@@ -19,7 +19,7 @@ services:
     arguments:
       - '@.inner'
 
-  #Notification channels
+  #Notification channels (from first injected to last)
   Notifications\Domain\Channels\EmailChannel:
     arguments:
       - !tagged_iterator notification_channels_providers.email_transport
@@ -28,17 +28,29 @@ services:
 
   Notifications\Domain\Channels\PhoneChannel:
     arguments:
-      - !tagged_iterator notification_channels_providers.phone_transport
+      - !tagged_iterator notification_channels_providers.sms_transport
     tags:
-      - { name: 'notification_channels.channel', priority: 10 }
+      - { name: 'notification_channels.channel', priority: 5 }
 
   #Notification transports
   Notifications\Infrastructure\Adapter\AwsSesTransport:
     tags:
       - { name: 'notification_channels_providers.email_transport', priority: 10 }
 
-  Notifications\Infrastructure\Adapter\GaneshaAwsSesTransport:
+  Notifications\Infrastructure\Adapter\TwilioSmsTransport:
+    tags:
+      - { name: 'notification_channels_providers.sms_transport', priority: 10 }
+
+  aws_ses_email_transport_ganesha_decorator:
+    class: Notifications\Infrastructure\Adapter\GaneshaTransportDecorator
     decorates: Notifications\Infrastructure\Adapter\AwsSesTransport
+    arguments:
+      - '@.inner'
+      - '@Ackintosh\Ganesha'
+
+  twilio_sms_transport_ganesha_decorator:
+    class: Notifications\Infrastructure\Adapter\GaneshaTransportDecorator
+    decorates: Notifications\Infrastructure\Adapter\TwilioSmsTransport
     arguments:
       - '@.inner'
       - '@Ackintosh\Ganesha'
@@ -48,8 +60,8 @@ services:
     arguments:
       - '@Messages\Domain\Messages'
 
-  Notifications\Domain\Channels\ChannelsActivationFlags:
-    class: Notifications\Infrastructure\Adapter\InMemoryChannelsActivationFlags
+  Notifications\Domain\Channels\ChannelsFeatureFlags:
+    class: Notifications\Infrastructure\Adapter\InMemoryChannelsFeatureFlags
 
   Notifications\Domain\NotificationsLogs:
     class: Notifications\Infrastructure\Adapter\MonologNotificationsLogs

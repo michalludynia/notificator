@@ -18,7 +18,7 @@ class PhoneChannel implements Channel
     /** @param Transport[] $phoneTransports */
     public function __construct(
         private readonly iterable $phoneTransports,
-        private readonly ChannelsActivationFlags $activationFlags
+        private readonly ChannelsFeatureFlags $activationFlags
     ) {
     }
 
@@ -35,6 +35,7 @@ class PhoneChannel implements Channel
                 return NotificationResult::success(
                     self::getId(),
                     $phoneTransport->getId(),
+                    $to->phone->getValue()
                 );
             } catch (TransportFailedException) {
                 continue;

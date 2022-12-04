@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Notifications\Test\Unit\Domain;
 
 use Notifications\Domain\Channels\Channel;
-use Notifications\Domain\Channels\ChannelsActivationFlags;
+use Notifications\Domain\Channels\ChannelsFeatureFlags;
 use Notifications\Domain\Channels\EmailChannel;
 use Notifications\Domain\Channels\PhoneChannel;
 use Notifications\Domain\Channels\Transports\Transport;
@@ -17,7 +17,7 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
 use Notifications\Domain\ValueObject\Phone;
 use Notifications\Domain\ValueObject\Receiver;
-use Notifications\Test\TestDouble\FakeChannelsActivationFlags;
+use Notifications\Test\TestDouble\FakeChannelsFeatureFlags;
 use Notifications\Test\TestDouble\FakeEmailTransport;
 use Notifications\Test\TestDouble\FakePhoneTransport;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ class NotificatorTest extends TestCase
     public function notificatorUseOnlyActivatedServices(): void
     {
         // given
-        $activationFlags = new FakeChannelsActivationFlags([
+        $activationFlags = new FakeChannelsFeatureFlags([
                 PhoneChannel::getId(),
             ]
         );
@@ -58,7 +58,7 @@ class NotificatorTest extends TestCase
     public function notificatorReturnsFailureResultWhenNoneOfProvidersIsActivated(): void
     {
         // given
-        $activationFlags = new FakeChannelsActivationFlags([]);
+        $activationFlags = new FakeChannelsFeatureFlags([]);
 
         $notificationChannels = [
             new EmailChannel(
@@ -96,7 +96,7 @@ class NotificatorTest extends TestCase
         $firstPhoneTransport = $this->createMock(Transport::class);
         $firstPhoneTransport->method('isAvailable')->willReturn(true);
 
-        $activationFlags = $this->createMock(ChannelsActivationFlags::class);
+        $activationFlags = $this->createMock(ChannelsFeatureFlags::class);
         $activationFlags->method('isChannelActivated')->willReturn(true);
 
         // then

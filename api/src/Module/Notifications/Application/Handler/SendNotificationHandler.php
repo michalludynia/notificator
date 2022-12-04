@@ -23,7 +23,7 @@ class SendNotificationHandler implements MessageHandlerInterface
 
     public function __invoke(SendNotification $command): void
     {
-        $localisedMessageContent = $this->messagesPort->getContentForLanguage(
+        $localisedMessageContent = $this->messagesPort->getLocalised(
             $command->messageId,
             $command->preferredLanguage
         );

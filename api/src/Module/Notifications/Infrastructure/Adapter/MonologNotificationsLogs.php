@@ -7,7 +7,6 @@ namespace Notifications\Infrastructure\Adapter;
 use Notifications\Domain\NotificationsLogs;
 use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\NotificationResult;
-use Notifications\Domain\ValueObject\Receiver;
 use Psr\Log\LoggerInterface;
 
 class MonologNotificationsLogs implements NotificationsLogs
@@ -17,12 +16,12 @@ class MonologNotificationsLogs implements NotificationsLogs
     ) {
     }
 
-    public function log(Receiver $receiver, Notification $notification, NotificationResult $notificationResult): void
+    public function log(Notification $notification, NotificationResult $notificationResult): void
     {
         if (false === $notificationResult->hasSucceed) {
             $this->logger->notice(
                 sprintf('[NOTIFICATOR_FAILED] Receiver: %s MessageTitle: "%s" Reason: "%s" Channel: "%s" Transport: "%s"',
-                    $receiver->email->getValue(),
+                    $notificationResult->recipient,
                     $notification->messageTitle,
                     $notificationResult->failureReason->value ?? '',
                     $notificationResult->usedChannel?->getValue(),
@@ -36,7 +35,7 @@ class MonologNotificationsLogs implements NotificationsLogs
         $this->logger->info(
             sprintf(
                 '[NOTIFICATOR_SUCCEEDED] Receiver: "%s" MessageTitle: "%s" Channel: "%s" Transport: "%s"',
-                $receiver->email->getValue(),
+                $notificationResult->recipient,
                 $notification->messageTitle,
                 $notificationResult->usedChannel?->getValue(),
                 $notificationResult->usedTransport?->getValue(),

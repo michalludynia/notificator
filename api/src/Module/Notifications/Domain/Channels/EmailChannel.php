@@ -18,7 +18,7 @@ class EmailChannel implements Channel
     /** @param Transport[] $emailTransports */
     public function __construct(
         private readonly iterable $emailTransports,
-        private readonly ChannelsActivationFlags $activationFlags
+        private readonly ChannelsFeatureFlags $activationFlags
     ) {
     }
 
@@ -31,10 +31,10 @@ class EmailChannel implements Channel
 
             try {
                 $emailTransport->send($to, $notification);
-
                 return NotificationResult::success(
                     self::getId(),
                     $emailTransport->getId(),
+                    $to->email->getValue()
                 );
             } catch (TransportFailedException) {
                 continue;

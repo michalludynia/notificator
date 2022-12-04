@@ -17,7 +17,7 @@ class MessagesAdapter implements MessagesPort
     ) {
     }
 
-    public function getContentForLanguage(string $messageId, string $languageCode): MessageDTO
+    public function getLocalised(string $messageId, string $languageCode): MessageDTO
     {
         $message = $this->messages->find(MessageId::fromString($messageId));
 

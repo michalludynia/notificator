@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Notifications\Test\TestDouble;
 
-use Notifications\Domain\Channels\ChannelsActivationFlags;
+use Notifications\Domain\Channels\ChannelsFeatureFlags;
 use Notifications\Domain\ValueObject\ChannelId;
 
-class FakeChannelsActivationFlags implements ChannelsActivationFlags
+class FakeChannelsFeatureFlags implements ChannelsFeatureFlags
 {
     public function __construct(
         /** @var ChannelId[] $activeChannelsStorage */

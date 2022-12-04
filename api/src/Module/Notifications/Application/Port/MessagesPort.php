@@ -8,5 +8,5 @@ use Notifications\Application\DTO\MessageDTO;
 
 interface MessagesPort
 {
-    public function getContentForLanguage(string $messageId, string $languageCode): MessageDTO;
+    public function getLocalised(string $messageId, string $languageCode): MessageDTO;
 }

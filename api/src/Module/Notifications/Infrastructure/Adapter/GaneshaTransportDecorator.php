@@ -11,7 +11,7 @@ use Notifications\Domain\ValueObject\Notification;
 use Notifications\Domain\ValueObject\Receiver;
 use Notifications\Domain\ValueObject\TransportId;
 
-class GaneshaAwsSesTransport implements Transport
+class GaneshaTransportDecorator implements Transport
 {
     public function __construct(
         private readonly Transport $decorated,

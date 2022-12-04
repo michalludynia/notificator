@@ -19,7 +19,7 @@ class LoggableNotificator implements NotificatorInterface
     public function notify(Receiver $receiver, Notification $notification): NotificationResult
     {
         $result = $this->decorated->notify($receiver, $notification);
-        $this->notificationsLogs->log($receiver, $notification, $result);
+        $this->notificationsLogs->log($notification, $result);
 
         return $result;
     }
