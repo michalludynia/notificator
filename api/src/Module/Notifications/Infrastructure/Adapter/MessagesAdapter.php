@@ -17,6 +17,17 @@ class MessagesAdapter implements MessagesPort
     ) {
     }
 
+    public function allMessagesIds(): array
+    {
+        $titles = [];
+
+        foreach ($this->messages->getAll() as $message) {
+            $titles[] = $message->id->value;
+        }
+
+        return $titles;
+    }
+
     public function getLocalised(string $messageId, string $languageCode): MessageDTO
     {
         $message = $this->messages->find(MessageId::fromString($messageId));

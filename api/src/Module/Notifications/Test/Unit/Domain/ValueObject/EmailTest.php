@@ -29,7 +29,6 @@ class EmailTest extends TestCase
         Email::create($invalidEmail);
     }
 
-    /** @return string[] */
     private function invalidEmailDataProvider(): array
     {
         return [

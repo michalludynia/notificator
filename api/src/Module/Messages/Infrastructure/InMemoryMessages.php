@@ -28,37 +28,42 @@ class InMemoryMessages implements Messages
         return $found[0];
     }
 
+    public function getAll(): array
+    {
+        return $this->storage();
+    }
+
     /** @return Message[] */
     private function storage(): array
     {
         return [
             new Message(
-                MessageId::fromString('1'),
+                MessageId::fromString('GreetingMessage'),
                 [
                     new LocalisedContent(
                         LanguageCode::En,
-                        'Greeting 1',
+                        'Greeting message',
                         'Hello, how are you?'
                     ),
                     new LocalisedContent(
                         LanguageCode::Pl,
-                        'Przywitanie 1',
+                        'Wiadomość powitalna',
                         'Cześć, jak się masz?'
                     ),
                 ]
             ),
             new Message(
-                MessageId::fromString('2'),
+                MessageId::fromString('GoodbyeMessage'),
                 [
                     new LocalisedContent(
                         LanguageCode::En,
-                        'Greeting 2',
-                        'Hello, have a nice day!'
+                        'Goodbye message',
+                        'See you soon.'
                     ),
                     new LocalisedContent(
                         LanguageCode::Pl,
-                        'Przywitanie 2',
-                        'Cześć, miłego dnia!'
+                        'Wiadomość pożegnalna',
+                        'Do zobaczenia wkrótce.'
                     ),
                 ]
             ),
