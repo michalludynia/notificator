@@ -114,7 +114,7 @@ https://martinfowler.com/bliki/CircuitBreaker.html
 It let the notifier component to fail fast and use fallback strategies in case of any failures. 
 The circuit breaker tracks availability of each transport and opens or closes the circuit depending of it's availability.
 The pattern was implemented with use of php package called Ganesha (https://github.com/ackintosh/ganesha).
-You can find more context about that decision in the one of ADR's located in */docs* catalog.
+You can find more context about that decision in the one of ADR's: [Circuit breaker implementation ADR](./api/docs/architecture/decisions/ADR1-circuit-breaker-implementation.md)
 
 #### Multiple transports per channel
 Each of notification channels can have multiple transports to deliver the notification. For example the email channel can use 
