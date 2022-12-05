@@ -22,7 +22,7 @@ docker-compose version 2.13.0
 
 #### 1. Clone API repository
 ```bash
-git clone --branch main git@github.com:michalludynia/notificator.git notificator
+git clone https://github.com/michalludynia/notificator.git notificator
 ```
 
 #### 2. Change current directory
@@ -42,7 +42,11 @@ If you would like to use the application with the real notifications providers l
 make up
 ```
 
-
+Please wait a while after the command finished since php container might be still installing external packages.
+You can be sure that process has finished if you'll see in the php container logs a message:
+```bash
+2022-12-05 21:16:51 [05-Dec-2022 21:16:51] NOTICE: ready to handle connections
+```
 
 
 
@@ -69,7 +73,8 @@ Receiver: "email@email.com/123123123" MessageTitle: "Greeting message" Transport
 The log visible in the console, will be also available through container, located in the file */var/log/notification.log*
 
 #### 2. Enable/disable specific notifications channels
-You can choose which notification channels should be enabled at the moment. To do so, you have to edit the environment variables.
+You can choose which notification channels should be enabled at the moment. To do so, you have to edit the environment variables located in
+[.env file](api/.env)
 
 Below you can see all that channels are enabled. If you would like to turn off the specific one, just change the boolean value from true to false.
 ```
