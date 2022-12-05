@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ExampleClient\Application\DTO;
 
-class CustomerDTO
+final class CustomerDTO
 {
     public function __construct(
         public readonly string $email,

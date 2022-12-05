@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Notifications\Application\DTO;
 
-class NotificationDTO
+final class NotificationDTO
 {
     public function __construct(
         public readonly string $title,

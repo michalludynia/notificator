@@ -6,7 +6,7 @@ namespace ExampleClient\Application\Command;
 
 use ExampleClient\Application\DTO\CustomerDTO;
 
-class NotifyCustomers
+final class NotifyCustomers
 {
     public function __construct(
         public readonly string $messageId,

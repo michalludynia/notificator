@@ -7,7 +7,7 @@ namespace Notifications\Application\Command;
 use Notifications\Application\DTO\NotificationDTO;
 use Notifications\Application\DTO\RecipientDTO;
 
-class SendNotification
+final class SendNotification
 {
     public function __construct(
         public readonly RecipientDTO $recipient,

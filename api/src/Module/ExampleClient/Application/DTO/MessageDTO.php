@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace ExampleClient\Application\DTO;
 
-class MessageDTO
+final class MessageDTO
 {
     public function __construct(
         public readonly string $id,
