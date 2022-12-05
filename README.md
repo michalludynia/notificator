@@ -22,12 +22,12 @@ docker-compose version 2.13.0
 
 #### 1. Clone API repository
 ```bash
-youruser@machine:$ git clone --branch main git@github.com:michalludynia/notificator.git notificator
+git clone --branch main git@github.com:michalludynia/notificator.git notificator
 ```
 
 #### 2. Change current directory
 ```bash
-youruser@machine:$ cd notificator
+cd notificator
 ```
 
 #### 3. Fill environment file with required secrets.
@@ -39,7 +39,7 @@ If you would like to use the application with the real notifications providers l
 
 #### 4. Build and run the project with command:
 ```bash
-youruser@machine:/notificator $ make up
+make up
 ```
 
 
@@ -51,11 +51,11 @@ youruser@machine:/notificator $ make up
 #### 1. Send example notifications to provided customer
 If you would like to test notification sending go into shell terminal of php container by running the command:
 ```bash
-youruser@machine:/notificator $ make sh
+make sh
 ```
 Then, to start the process, use command:
 ```bash
-youruser@machine:/notificator $ bin/console example-client:notify-customer
+bin/console example-client:notify-customer
 ```
 The terminal will ask you to provide basic customer information and choose the message you would like to send. \
 The application comes with two ready to use messages called: *GreetingMessage* and *GoodbyeMessage*. Both, are available in two language versions: English and Polish.
@@ -89,18 +89,18 @@ It is possible to change this behaviour by changing *priority* parameter in [ser
 To run tests, run the following command:
 
 ```bash
-youruser@machine:/notificator $ make test-all
+make test-all
 ```
 
 The command will run tests from phpunit and behat frameworks. However, if you would like to \
 run only one specific framework you can always execute of the command:
 
 ```bash
-youruser@machine:/notificator $ make test-unit
+make test-unit
 ```
 
 ```bash
-youruser@machine:/notificator $ make test-business
+make test-business
 ```
 ## Architecture & trade-offs
 #### Layers
