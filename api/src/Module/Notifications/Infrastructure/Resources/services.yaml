@@ -72,11 +72,6 @@ services:
       - '@.inner'
       - '@monolog.logger.notifications_logs'
 
-  Notifications\Application\Port\MessagesPort:
-    class: Notifications\Infrastructure\Adapter\MessagesAdapter
-    arguments:
-      - '@Messages\Domain\Messages'
-
   Notifications\Domain\Channels\ChannelsFeatureFlags:
     class: Notifications\Infrastructure\Adapter\EnvChannelsFeatureFlags
     arguments:

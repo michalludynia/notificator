@@ -39,7 +39,8 @@
         "psr-4": {
             "Framework\\": "src/Module/Framework",
             "Notifications\\": "src/Module/Notifications",
-            "Messages\\": "src/Module/Messages"
+            "Messages\\": "src/Module/Messages",
+            "ExampleClient\\": "src/Module/ExampleClient"
         }
     },
     "autoload-dev": {

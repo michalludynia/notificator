@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Presentation\Cli;
+namespace ExampleClient\Presentation\Cli;
 
-use Messages\Domain\ValueObject\LanguageCode;
-use Notifications\Application\Command\NotifyCustomers;
-use Notifications\Application\DTO\CustomerDTO;
-use Notifications\Application\Port\MessagesPort;
-use Notifications\Domain\ValueObject\Email;
-use Notifications\Domain\ValueObject\Phone;
+use ExampleClient\Application\Command\NotifyCustomers;
+use ExampleClient\Application\DTO\CustomerDTO;
+use ExampleClient\Application\Port\MessagesPort;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,8 +28,8 @@ class SendNotificationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Send notification')
-            ->setName('notifications:send-to-customer');
+            ->setDescription('Command sends a notification to single provided customer')
+            ->setName('example-client:notify-customer');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -50,7 +47,10 @@ class SendNotificationCommand extends Command
             if (!\is_string($answer)) {
                 throw new \RuntimeException('Invalid email');
             }
-            Email::create($answer);
+
+            if (false === filter_var($answer, FILTER_VALIDATE_EMAIL)) {
+                throw new \RuntimeException('Invalid email');
+            }
 
             return $answer;
         });
@@ -60,14 +60,13 @@ class SendNotificationCommand extends Command
             if (!\is_string($answer)) {
                 throw new \RuntimeException('Invalid phone');
             }
-            Phone::create($answer);
 
             return $answer;
         });
 
         $customerLanguageQuestion = new ChoiceQuestion(
             'Choose customer preferred language: ',
-            array_map(static fn (LanguageCode $languageCode) => $languageCode->value, LanguageCode::cases())
+            $this->messagesPort->availableLanguagesCodes()
         );
 
         $messageId = (string) $helper->ask($input, $output, $messageIdQuestion);

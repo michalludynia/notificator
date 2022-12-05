@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Application\DTO;
+namespace ExampleClient\Application\DTO;
 
 class MessageDTO
 {

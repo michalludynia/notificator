@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Application\Port;
+namespace ExampleClient\Application\Port;
 
-use Notifications\Application\DTO\MessageDTO;
+use ExampleClient\Application\DTO\MessageDTO;
 
 interface MessagesPort
 {
@@ -12,4 +12,7 @@ interface MessagesPort
     public function allMessagesIds(): array;
 
     public function getLocalised(string $messageId, string $languageCode): MessageDTO;
+
+    /** @return string[] */
+    public function availableLanguagesCodes(): array;
 }

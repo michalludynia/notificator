@@ -7,6 +7,7 @@ namespace Messages\Test\Unit\Domain;
 use Messages\Domain\Message;
 use Messages\Domain\ValueObject\LanguageCode;
 use Messages\Domain\ValueObject\LocalisedContent;
+use Messages\Domain\ValueObject\LocalisedContentCollection;
 use Messages\Domain\ValueObject\MessageId;
 use PHPUnit\Framework\TestCase;
 
@@ -29,17 +30,17 @@ class MessageTest extends TestCase
 
         $message = new Message(
             MessageId::fromString('1'),
-            [$expectedEnContent, $expectedPlContent]
+            new LocalisedContentCollection([$expectedEnContent, $expectedPlContent])
         );
 
         $this->assertEquals(
             $expectedEnContent,
-            $message->getLocalisedContent(LanguageCode::En)
+            $message->getContentInLanguage(LanguageCode::En)
         );
 
         $this->assertEquals(
             $expectedPlContent,
-            $message->getLocalisedContent(LanguageCode::Pl)
+            $message->getContentInLanguage(LanguageCode::Pl)
         );
     }
 }

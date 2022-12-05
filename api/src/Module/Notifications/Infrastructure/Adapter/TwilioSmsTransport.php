@@ -15,7 +15,7 @@ use Symfony\Component\Notifier\Recipient\Recipient as RecipientSymfony;
 
 class TwilioSmsTransport implements Transport
 {
-    private const TRANSPORT_ID = 'phone_transport_twilio';
+    private const TRANSPORT_ID = 'sms_transport_twilio';
 
     public function __construct(
         private readonly NotifierInterface $notifier

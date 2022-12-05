@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Application\Command;
+namespace ExampleClient\Application\Command;
 
-use Notifications\Application\DTO\CustomerDTO;
+use ExampleClient\Application\DTO\CustomerDTO;
 
 class NotifyCustomers
 {

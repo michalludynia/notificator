@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Infrastructure\Adapter;
+namespace ExampleClient\Infrastructure\Adapter;
 
+use ExampleClient\Application\DTO\MessageDTO;
+use ExampleClient\Application\Port\MessagesPort;
 use Messages\Domain\Messages;
 use Messages\Domain\ValueObject\LanguageCode;
 use Messages\Domain\ValueObject\MessageId;
-use Notifications\Application\DTO\MessageDTO;
-use Notifications\Application\Port\MessagesPort;
 
 class MessagesAdapter implements MessagesPort
 {
@@ -32,12 +32,17 @@ class MessagesAdapter implements MessagesPort
     {
         $message = $this->messages->find(MessageId::fromString($messageId));
 
-        $content = $message->getLocalisedContent(LanguageCode::from($languageCode));
+        $content = $message->getContentInLanguage(LanguageCode::from($languageCode));
 
         return new MessageDTO(
             $message->id->value,
             $content->title,
             $content->content
         );
+    }
+
+    public function availableLanguagesCodes(): array
+    {
+        return array_map(static fn (LanguageCode $languageCode) => $languageCode->value, LanguageCode::cases());
     }
 }

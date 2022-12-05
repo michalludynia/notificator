@@ -55,7 +55,7 @@ youruser@machine:/notificator $ make sh
 ```
 Then, to start the process, use command:
 ```bash
-youruser@machine:/notificator $ bin/console notification:send-to-customer
+youruser@machine:/notificator $ bin/console example-client:notify-customer
 ```
 The terminal will ask you to provide basic customer information and choose the message you would like to send. \
 The application comes with two ready to use messages called: *GreetingMessage* and *GoodbyeMessage*. Both, are available in two language versions: English and Polish.

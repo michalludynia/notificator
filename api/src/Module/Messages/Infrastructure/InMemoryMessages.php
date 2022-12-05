@@ -8,6 +8,7 @@ use Messages\Domain\Message;
 use Messages\Domain\Messages;
 use Messages\Domain\ValueObject\LanguageCode;
 use Messages\Domain\ValueObject\LocalisedContent;
+use Messages\Domain\ValueObject\LocalisedContentCollection;
 use Messages\Domain\ValueObject\MessageId;
 
 class InMemoryMessages implements Messages
@@ -39,33 +40,35 @@ class InMemoryMessages implements Messages
         return [
             new Message(
                 MessageId::fromString('GreetingMessage'),
-                [
-                    new LocalisedContent(
-                        LanguageCode::En,
-                        'Greeting message',
-                        'Hello, how are you?'
-                    ),
-                    new LocalisedContent(
-                        LanguageCode::Pl,
-                        'Wiadomość powitalna',
-                        'Cześć, jak się masz?'
-                    ),
-                ]
+                new LocalisedContentCollection([
+                        new LocalisedContent(
+                            LanguageCode::En,
+                            'Greeting message',
+                            'Hello, how are you?'
+                        ),
+                        new LocalisedContent(
+                            LanguageCode::Pl,
+                            'Wiadomość powitalna',
+                            'Cześć, jak się masz?'
+                        ),
+                    ]
+                ),
             ),
             new Message(
                 MessageId::fromString('GoodbyeMessage'),
-                [
-                    new LocalisedContent(
-                        LanguageCode::En,
-                        'Goodbye message',
-                        'See you soon.'
-                    ),
-                    new LocalisedContent(
-                        LanguageCode::Pl,
-                        'Wiadomość pożegnalna',
-                        'Do zobaczenia wkrótce.'
-                    ),
-                ]
+                new LocalisedContentCollection([
+                        new LocalisedContent(
+                            LanguageCode::En,
+                            'Goodbye message',
+                            'See you soon.'
+                        ),
+                        new LocalisedContent(
+                            LanguageCode::Pl,
+                            'Wiadomość pożegnalna',
+                            'Do zobaczenia wkrótce.'
+                        ),
+                    ]
+                ),
             ),
         ];
     }

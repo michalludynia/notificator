@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Notifications\Application\Handler;
+namespace ExampleClient\Application\Handler;
 
-use Notifications\Application\Command\NotifyCustomers;
+use ExampleClient\Application\Command\NotifyCustomers;
+use ExampleClient\Application\DTO\CustomerDTO;
+use ExampleClient\Application\Port\MessagesPort;
 use Notifications\Application\Command\SendNotification;
-use Notifications\Application\DTO\CustomerDTO;
 use Notifications\Application\DTO\NotificationDTO;
 use Notifications\Application\DTO\RecipientDTO;
-use Notifications\Application\Port\MessagesPort;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 

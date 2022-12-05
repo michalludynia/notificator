@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ExampleClient\:
+    resource: '../../**'
+    exclude: '../../{Test,Infrastructure}'
+
+  ExampleClient\Application\Port\MessagesPort:
+    class: ExampleClient\Infrastructure\Adapter\MessagesAdapter
+    arguments:
+      - '@Messages\Domain\Messages'

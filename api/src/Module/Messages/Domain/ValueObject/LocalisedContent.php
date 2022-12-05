@@ -7,7 +7,7 @@ namespace Messages\Domain\ValueObject;
 class LocalisedContent
 {
     public function __construct(
-        public readonly LanguageCode $language,
+        public readonly LanguageCode $languageCode,
         public readonly string $title,
         public readonly string $content,
     ) {
