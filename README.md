@@ -78,6 +78,12 @@ USE_EMAIL_CHANNEL=true
 USE_SMS_CHANNEL=true
 ```
 
+#### 3. Change channels/transports priorities 
+By default, the email channel priority is higher than sms channel - it means the notifications will be delivered by emails (if feature flag is enabled)
+and in case of failure the notification will try to deliver it withing sms channel. Exactly the same rule applies for setting up transports priorities. 
+
+It is possible to change this behaviour by changing *priority* parameter in [services.yaml configuration file](./api/src/Module/Notifications/Infrastructure/Resources/services.yaml)
+
 ## Running Tests
 
 To run tests, run the following command:
@@ -148,7 +154,7 @@ Those are the things that I would do, if I would have more time and less assumpt
 * Use asynchronous  message queue like RabbitMQ, Amazon SQS to introduce concurrency into sending and make app more failure resistant.
 * Use Kibana, Grafana or some similar tool to handle logs and prepare availability dashboards.
 * Use database, external service to fetch messages or accept content directly from outside contexts without fetching them from notificator app itself.
-* Increase test coverage
+* C4 Models in case the project would get bigger
 
 ## Authors
 
