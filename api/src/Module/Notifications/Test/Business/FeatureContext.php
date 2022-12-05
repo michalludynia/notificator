@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Notifications\Test\Business;
 
 use Behat\Behat\Context\Context;
-use Notifications\Application\Command\NotifyCustomers;
-use Notifications\Application\DTO\CustomerDTO;
+use ExampleClient\Application\Command\NotifyCustomers;
+use ExampleClient\Application\DTO\CustomerDTO;
 use Notifications\Domain\Channels\EmailChannel;
 use Notifications\Domain\Channels\SmsChannel;
 use Notifications\Test\Business\TestDouble\Repository\FeaturesFlagsFakeStorage;

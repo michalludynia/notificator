@@ -19,7 +19,7 @@
 ###< symfony/phpunit-bridge ###
 
 ###> phpunit/phpunit ###
-./coverage/
+/coverage/
 ./clover.cov
 ###< phpunit/phpunit ###
 
